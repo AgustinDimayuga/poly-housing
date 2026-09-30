@@ -76,6 +76,9 @@ alias for imports from the repo root instead of relative `../../` chains.
   *what* changed.
 - Open a PR against `main` and request a review before merging.
 
+## Architecture
+We are aiming for maintainability and security. During phase 1 we are ensuring to make our code maintainable and secure. 
+
 ## Questions
 
 If something in this doc is unclear or out of date, open a PR to fix it —
