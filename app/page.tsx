@@ -2,7 +2,85 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <p>Hello </p>
+    <div className="grid grid-cols-2">
+      {/* Right Side of the Page */}
+      <div className="grid grid-rows-3">
+        <div>
+          <h1> Your off-campus search, all in one place.</h1>
+           <p> Built aorund student life</p>
+        </div>
+
+        <div>
+          <p>Student-friendly homes, quarter-length subleases and the details you need before signing</p>
+          <p> Pictures will go here </p>
+        </div>
+
+        <div>
+          <ul>
+            <li>Keep your shortlist together</li>
+            <li> Connect with the right person</li>
+            <li> Plan for your Move in </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* rightside of the Login Page
+      The structure of the pages is :
+      Every div inside the huge div is grid-row (for better orgnaization)
+      for the input of first name and last name inside of that corresponding div is a
+      flex that separates first & last name input and another flex that
+      makes the label and input stack on top of each other
+      otherwise every dive is using flex-col so the content inside of it stack
+      (There is probably a better way to use Flex instead of copying pasting)
+      - For Inputs I erased the Id label FYI, will probably have to add it later when backend is created
+      */}
+
+
+      <div className="grid grid-row">
+        <div>
+          <p> Create your Account  </p>
+          <p> Im here as a....</p>
+        </div>
+
+        <div className=" flex flex-row justify-evenly gap-10 ">
+          <button type="button" aria-label="Student" className=" bg-gray-300 rounded-md p-1 w-full"> Student </button>
+          <button type="button" aria-label="Owner/Realtor" className=" bg-gray-300 rounded-md p-1 w-full"> Owner/Realtor </button>
+        </div>
+
+        <div className=" flex flex-row  gap-5 ">
+          <div className="flex flex-col justify-self-auto w-full">
+            <label htmlFor="name">First Name</label>
+            <input type="text" placeholder="Enter your name" className="border rounded-md p-2"/>
+          </div>
+          <div className="flex flex-col justify-self-auto w-full">
+            <label htmlFor="Last_Name">Last Name</label>
+            <input type="text" placeholder="Enter your Last name" className="border rounded-md p-2"/>
+          </div>
+
+
+        </div>
+        <div className=" flex flex-col justify-start">
+          <label htmlFor="Email_Address">Email Address</label>
+            <input type="text" placeholder="Enter your Email Adress" className="border rounded-md p-2"/>
+
+        </div>
+        <div className=" flex flex-col justify-start">
+          <label htmlFor="Password">Password</label>
+            <input type="text" placeholder="Enter your Password" className="border rounded-md p-2"/>
+
+        </div>
+        <div className=" flex flex-col justify-start">
+          <label htmlFor="Confirm_password">Confirm Password</label>
+            <input type="text" placeholder="Confirm Password" className="border rounded-md p-2"/>
+        </div>
+
+        <div className="flex flex-row justify-center mt-10">
+            <button type="button" aria-label="Create Account" className=" bg-gray-300 rounded-md p-1 w-full"> Create Account</button>
+        </div>
+
+      </div>
+
+    </div>
 
   );
 }
