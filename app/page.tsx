@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2 bg-poly-green-light min-h-screen">
       {/* Right Side of the Page */}
       <div className="grid grid-rows-3">
         <div>
@@ -36,46 +36,48 @@ export default function Home() {
       */}
 
 
-      <div className="grid grid-row">
+      <div className="flex flex-col mr-20 mt-20 gap-5">
         <div>
-          <p> Create your Account  </p>
+          <h1 className="text-2xl font-bold"> Create your Account  </h1>
+          <p className="mt-5"> Already Have an Account? </p>
           <p> Im here as a....</p>
         </div>
 
         <div className=" flex flex-row justify-evenly gap-10 ">
-          <button type="button" aria-label="Student" className=" bg-gray-300 rounded-md p-1 w-full"> Student </button>
-          <button type="button" aria-label="Owner/Realtor" className=" bg-gray-300 rounded-md p-1 w-full"> Owner/Realtor </button>
+          <button type="button" aria-label="Student" className=" rounded-md p-1 w-full bg-poly-green-dark text-white"> Student </button>
+          <button type="button" aria-label="Owner/Realtor" className=" rounded-md p-1 w-full bg-poly-green-dark text-white"> Owner/Realtor </button>
         </div>
 
         <div className=" flex flex-row  gap-5 ">
-          <div className="flex flex-col justify-self-auto w-full">
+          <div className="flex flex-col justify-self-auto w-full gap-3">
             <label htmlFor="name">First Name</label>
-            <input type="text" placeholder="Enter your name" className="border rounded-md p-2"/>
+            <input type="text" placeholder="Enter your name" className="border rounded-md p-2 bg-white  border-border-inputs"/>
           </div>
-          <div className="flex flex-col justify-self-auto w-full">
+          <div className="flex flex-col justify-self-auto w-full gap-3 ">
             <label htmlFor="Last_Name">Last Name</label>
-            <input type="text" placeholder="Enter your Last name" className="border rounded-md p-2"/>
+            <input type="text" placeholder="Enter your Last name" className="border rounded-md p-2  bg-white  border-border-inputs"/>
           </div>
 
 
         </div>
-        <div className=" flex flex-col justify-start">
+        <div className=" flex flex-col justify-start gap-3">
           <label htmlFor="Email_Address">Email Address</label>
-            <input type="text" placeholder="Enter your Email Adress" className="border rounded-md p-2"/>
+            <input type="text" placeholder="Enter your Email Adress" className="border rounded-md p-2 bg-white  border-border-inputs"/>
 
         </div>
-        <div className=" flex flex-col justify-start">
+        <div className=" flex flex-col justify-start gap-3">
           <label htmlFor="Password">Password</label>
-            <input type="text" placeholder="Enter your Password" className="border rounded-md p-2"/>
+            <input type="password" placeholder="Enter your Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
 
         </div>
-        <div className=" flex flex-col justify-start">
-          <label htmlFor="Confirm_password">Confirm Password</label>
-            <input type="text" placeholder="Confirm Password" className="border rounded-md p-2"/>
+        <div className=" flex flex-col justify-start gap-3 ">
+          <label htmlFor="Confirm_password ">Confirm Password</label>
+            <input type="password" placeholder="Confirm Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
+          <p className="text-under-input text-sm">At least 8 characters with a number or symbol</p>
         </div>
 
         <div className="flex flex-row justify-center mt-10">
-            <button type="button" aria-label="Create Account" className=" bg-gray-300 rounded-md p-1 w-full"> Create Account</button>
+            <button type="button" aria-label="Create Account" className=" rounded-md p-1 w-full  bg-poly-green-dark text-white"> Create Account</button>
         </div>
 
       </div>

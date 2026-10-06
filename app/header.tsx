@@ -2,7 +2,7 @@ import Image from "next/image"
 
 export default function Header() {
   return (
-    <div className=" grid grid-cols-2 bg-white text-black p-5 shadow-xl" >
+    <div className=" grid grid-cols-2 bg-white text-black p-5 shadow-md" >
 
         <div className="flex flex-row ">
 
