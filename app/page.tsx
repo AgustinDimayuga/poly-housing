@@ -1,4 +1,5 @@
-import Image from "next/image";
+import Button from "./components/button";
+import Textbox from "./components/text";
 
 export default function Home() {
   return (
@@ -6,7 +7,7 @@ export default function Home() {
       {/* Right Side of the Page */}
       <div className="grid grid-rows-3">
         <div>
-          <h1 className=""> Your off-campus search, all in one place.</h1>
+          <h1 className="text-4xl "> Your off-campus search, all in one place.</h1>
            <p> Built aorund student life</p>
         </div>
 
@@ -47,48 +48,55 @@ export default function Home() {
           <p > Im here as a....</p>
         </div>
         <div className=" flex flex-row justify-evenly gap-10 ">
-          <button type="button" aria-label="Student" className=" rounded-md p-1 w-full bg-poly-green-dark text-white active:bg-button-click"> Student </button>
-          <button type="button" aria-label="Owner/Realtor" className=" rounded-md p-1 w-full bg-poly-green-dark text-white active:bg-button-click"> Owner/Realtor </button>
+          <Button variant="primary" aria-label="Student">Student</Button>
+          <Button variant="white" aria-label="Owner/Realtor" >Owner/Realtor</Button>
         </div>
 
         <div className=" flex flex-row  gap-5 ">
-          <div className="flex flex-col justify-self-auto w-full gap-3">
+
+          <Textbox placeholder="Enter your First Name"> First Name </Textbox>
+          {/* <div className="flex flex-col justify-self-auto w-full gap-3">
             <label htmlFor="name">First Name</label>
             <input type="text" placeholder="Enter your name" className="border rounded-md p-2 bg-white  border-border-inputs"/>
-          </div>
-          <div className="flex flex-col justify-self-auto w-full gap-3 ">
+          </div> */}
+          {/* <div className="flex flex-col justify-self-auto w-full gap-3 ">
             <label htmlFor="Last_Name">Last Name</label>
             <input type="text" placeholder="Enter your Last name" className="border rounded-md p-2  bg-white  border-border-inputs"/>
-          </div>
+          </div> */}
+          <Textbox placeholder=" Enter your last Name"> Last Name </Textbox>
 
 
         </div>
-        <div className=" flex flex-col justify-start gap-3">
+
+        {/* <div className=" flex flex-col justify-start gap-3">
           <label htmlFor="Email_Address">Email Address</label>
             <input type="email" placeholder="Enter your Email Adress" className="border rounded-md p-2 bg-white  border-border-inputs"/>
 
-        </div>
-        <div className=" flex flex-col justify-start gap-3">
+        </div> */}
+        <Textbox placeholder="Please Enter Your Email"> Email</Textbox>
+
+        {/* <div className=" flex flex-col justify-start gap-3">
           <label htmlFor="Password">Password</label>
           <input type="password" placeholder="Enter your Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
 
-        </div>
+        </div> */}
+
+        <Textbox placeholder="Please Enter Your Password" type="password"> Password </Textbox>
+
         <div className=" flex flex-col justify-start gap-3 ">
-          <label htmlFor="Confirm_password ">Confirm Password</label>
-            <input type="password" placeholder="Confirm Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
+          {/* <label htmlFor="Confirm_password ">Confirm Password</label>
+            <input type="password" placeholder="Confirm Password" className="border rounded-md p-2 bg-white  border-border-inputs"/> */}
+            <Textbox placeholder="Confirm Password" type="Password"> Confirm Password</Textbox>
           <p className="text-under-input text-sm">At least 8 characters with a number or symbol</p>
         </div>
+
        <div className="flex flex-row items-center gap-2">
-        <input
-          type="checkbox"
-          className="h-4 w-4 accent-green-800"
-        />
-        <span className="text-sm">
-          Send me housing updates by email (Optional)
-        </span>
+        <input type="checkbox" className="h-4 w-4 accent-green-800"/>
+        <span className="text-sm"> Send me housing updates by email (Optional)</span>
       </div>
-        <div className="flex flex-row justify-center mt-10">
-            <button type="button" aria-label="Create Account" className=" rounded-md p-1 w-full  bg-poly-green-dark text-white active:bg-button-click"> Create Account</button>
+
+        <div className="justify-center mt-10">
+            <Button variant="primary" aria-label="Create Account"> Create Account</Button>
         </div>
 
 
