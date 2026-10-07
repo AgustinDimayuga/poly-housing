@@ -11,8 +11,10 @@
   --color-border-inputs: #DDE3DB;
   --color-under-input: #6D7770;
   --color-green-button-click: #023020;
-  --color-white-button-click: #F3A3D0;
+  --color-mini-labels: #EAF1E9;
+  --color-signup-title-green: #20382F;
   --font-inter: "Inter", sans-serif;
+
 }
 
 /* @media (prefers-color-scheme: dark) {

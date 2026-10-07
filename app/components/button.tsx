@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes} from "react";
 
-type ButtonVariant = "primary" | "secondary"|"white";
+type ButtonVariant = "primary" | "secondary"| "white";
 
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -8,9 +8,9 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "rounded-md p-1 w-full bg-poly-green-dark text-white active:bg-green-button-click",
+  primary: "rounded-md p-1 bg-poly-green-dark text-white active:bg-green-button-click",
   secondary:"random shi ",
-  white: "rounded-md p-1 w-full bg-white text-black active:bg-white-button-click"
+  white: "rounded-md p-1 bg-white text-black border border-border-inputs active:bg-poly-green-light"
 
 };
 

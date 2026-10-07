@@ -1,108 +1,100 @@
+import Image from "next/image";
 import Button from "./components/button";
 import Textbox from "./components/text";
 
 export default function Home() {
   return (
-    <div className="grid grid-cols-2 bg-poly-green-light min-h-screen">
-      {/* Right Side of the Page */}
-      <div className="grid grid-rows-3">
-        <div>
-          <h1 className="text-4xl "> Your off-campus search, all in one place.</h1>
-           <p> Built aorund student life</p>
+
+
+      <div className="grid grid-cols-2 bg-poly-green-light min-h-screen">
+        {/* Right Side of the Page */}
+        <div className="grid grid-rows ml-15">
+
+          <div className="flex flex-col gap-10 items-start mt-10">
+            <p className=" inline-block text-poly-green-dark p-2 rounded-2xl bg-mini-labels text-sm"> Built around student life</p>
+            <h1 className="text-4xl font-semibold font-inter text-signup-title-green"> Your off-campus search,<br/> all in one place.</h1>
+          <p className="text-under-input">Student-friendly homes, quarter-length subleases and the details you <br/> need before signing</p>
+          <Image src="/polyhouse-signup.jpg" width={600} height={100} alt="Picture of House" className="rounded-2xl"/>
+          </div>
+
+          <div className=" flex flex-col gap-1 mt-[5%]">
+            <h2 className=" text-signup-title-green font-bold"> Keep your Shortlist together</h2>
+            <h2 className=" text-under-input"> Save Homes and notes  for your roommaate group</h2>
+            <h2 className=" text-signup-title-green font-bold"> Connect with the right person</h2>
+            <h2 className=" text-under-input"> Reach owners,realtors and students directly</h2>
+            <h2 className=" text-signup-title-green font-bold">Plan for your move-in</h2>
+            <h2 className=" text-under-input"> Search by dates, not just immediate vacancies</h2>
+          </div>
         </div>
 
-        <div>
-          <p>Student-friendly homes, quarter-length subleases and the details you need before signing</p>
-          <p> Pictures will go here </p>
+        {/* rightside of the Login Page
+        The structure of the pages is :
+        Every div inside the huge div is grid-row (for better orgnaization)
+        for the input of first name and last name inside of that corresponding div is a
+        flex that separates first & last name input and another flex that
+        makes the label and input stack on top of each other
+        otherwise every dive is using flex-col so the content inside of it stack
+        (There is probably a better way to use Flex instead of copying pasting)
+        - For Inputs I erased the Id label FYI, will probably have to add it later when backend is created
+        */}
+
+
+        <div className="flex flex-col mr-20 mt-20 gap-5">
+          <div>
+            <h1 className="text-4xl font-inter font-bold "> Create your Account  </h1>
+            <p className="mt-5 text-under-input hover:underline"> Already Have an Account? </p>
+
+          </div>
+
+          <div>
+            <p className="font-inter"> Im here as a....</p>
+          </div>
+          <div className=" flex flex-row justify-evenly gap-10 ">
+            <Button variant="primary" aria-label="Student" className="w-full">Student</Button>
+            <Button variant="white" aria-label="Owner/Realtor" className="w-full" >Owner/Realtor</Button>
+          </div>
+
+          <div className=" flex flex-row  gap-5 ">
+
+            <Textbox placeholder="Enter your First Name"> First Name </Textbox>
+
+            <Textbox placeholder=" Enter your last Name"> Last Name </Textbox>
+
+
+          </div>
+
+
+          <Textbox placeholder="Please Enter Your Email"> Email</Textbox>
+
+
+
+          <Textbox placeholder="Please Enter Your Password" type="password"> Password </Textbox>
+
+          <div className=" flex flex-col justify-start gap-3 ">
+            {/* <label htmlFor="Confirm_password ">Confirm Password</label>
+              <input type="password" placeholder="Confirm Password" className="border rounded-md p-2 bg-white  border-border-inputs"/> */}
+              <Textbox placeholder="Confirm Password" type="Password"> Confirm Password</Textbox>
+            <p className="text-under-input text-sm">At least 8 characters with a number or symbol</p>
+          </div>
+
+        <div className="flex flex-row items-center gap-2">
+         <label>
+          <input type="checkbox" className="h-4 w-4 accent-green-800"/>
+          <span className="text-sm  "> Send me housing updates by email (Optional)</span>
+          </label>
         </div>
 
-        <div>
-          <ul>
-            <li>Keep your shortlist together</li>
-            <li> Connect with the right person</li>
-            <li> Plan for your Move in </li>
-          </ul>
-        </div>
-      </div>
-
-      {/* rightside of the Login Page
-      The structure of the pages is :
-      Every div inside the huge div is grid-row (for better orgnaization)
-      for the input of first name and last name inside of that corresponding div is a
-      flex that separates first & last name input and another flex that
-      makes the label and input stack on top of each other
-      otherwise every dive is using flex-col so the content inside of it stack
-      (There is probably a better way to use Flex instead of copying pasting)
-      - For Inputs I erased the Id label FYI, will probably have to add it later when backend is created
-      */}
+          <div className="justify-center mt-10">
+              <Button variant="primary" aria-label="Create Account" className="w-full"> Create Account</Button>
+          </div>
 
 
-      <div className="flex flex-col mr-20 mt-20 gap-5">
-        <div>
-          <h1 className="text-4xl font-inter font-bold "> Create your Account  </h1>
-          <p className="mt-5 text-under-input hover:underline"> Already Have an Account? </p>
-
-        </div>
-
-        <div>
-          <p > Im here as a....</p>
-        </div>
-        <div className=" flex flex-row justify-evenly gap-10 ">
-          <Button variant="primary" aria-label="Student">Student</Button>
-          <Button variant="white" aria-label="Owner/Realtor" >Owner/Realtor</Button>
-        </div>
-
-        <div className=" flex flex-row  gap-5 ">
-
-          <Textbox placeholder="Enter your First Name"> First Name </Textbox>
-          {/* <div className="flex flex-col justify-self-auto w-full gap-3">
-            <label htmlFor="name">First Name</label>
-            <input type="text" placeholder="Enter your name" className="border rounded-md p-2 bg-white  border-border-inputs"/>
-          </div> */}
-          {/* <div className="flex flex-col justify-self-auto w-full gap-3 ">
-            <label htmlFor="Last_Name">Last Name</label>
-            <input type="text" placeholder="Enter your Last name" className="border rounded-md p-2  bg-white  border-border-inputs"/>
-          </div> */}
-          <Textbox placeholder=" Enter your last Name"> Last Name </Textbox>
-
-
-        </div>
-
-        {/* <div className=" flex flex-col justify-start gap-3">
-          <label htmlFor="Email_Address">Email Address</label>
-            <input type="email" placeholder="Enter your Email Adress" className="border rounded-md p-2 bg-white  border-border-inputs"/>
-
-        </div> */}
-        <Textbox placeholder="Please Enter Your Email"> Email</Textbox>
-
-        {/* <div className=" flex flex-col justify-start gap-3">
-          <label htmlFor="Password">Password</label>
-          <input type="password" placeholder="Enter your Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
-
-        </div> */}
-
-        <Textbox placeholder="Please Enter Your Password" type="password"> Password </Textbox>
-
-        <div className=" flex flex-col justify-start gap-3 ">
-          {/* <label htmlFor="Confirm_password ">Confirm Password</label>
-            <input type="password" placeholder="Confirm Password" className="border rounded-md p-2 bg-white  border-border-inputs"/> */}
-            <Textbox placeholder="Confirm Password" type="Password"> Confirm Password</Textbox>
-          <p className="text-under-input text-sm">At least 8 characters with a number or symbol</p>
-        </div>
-
-       <div className="flex flex-row items-center gap-2">
-        <input type="checkbox" className="h-4 w-4 accent-green-800"/>
-        <span className="text-sm"> Send me housing updates by email (Optional)</span>
-      </div>
-
-        <div className="justify-center mt-10">
-            <Button variant="primary" aria-label="Create Account"> Create Account</Button>
         </div>
 
 
-      </div>
 
-    </div>
+
+  </div>
 
   );
 }
