@@ -57,5 +57,5 @@ export async function POST(request: Request) {
   }
 
   users.push(newUser);
-  return NextResponse.json(newUser);
+  return NextResponse.json(newUser, { status: 201 });
 }

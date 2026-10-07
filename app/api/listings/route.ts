@@ -73,5 +73,5 @@ export async function POST(request: Request) {
   const newListing = await request.json();
 
   listings.push(newListing);
-  return NextResponse.json(newListing);
+  return NextResponse.json(newListing, { status: 201 });
 }
