@@ -6,7 +6,7 @@ export default function Home() {
       {/* Right Side of the Page */}
       <div className="grid grid-rows-3">
         <div>
-          <h1> Your off-campus search, all in one place.</h1>
+          <h1 className=""> Your off-campus search, all in one place.</h1>
            <p> Built aorund student life</p>
         </div>
 
@@ -38,14 +38,17 @@ export default function Home() {
 
       <div className="flex flex-col mr-20 mt-20 gap-5">
         <div>
-          <h1 className="text-2xl font-bold"> Create your Account  </h1>
-          <p className="mt-5"> Already Have an Account? </p>
-          <p> Im here as a....</p>
+          <h1 className="text-4xl font-inter font-bold "> Create your Account  </h1>
+          <p className="mt-5 text-under-input hover:underline"> Already Have an Account? </p>
+
         </div>
 
+        <div>
+          <p > Im here as a....</p>
+        </div>
         <div className=" flex flex-row justify-evenly gap-10 ">
-          <button type="button" aria-label="Student" className=" rounded-md p-1 w-full bg-poly-green-dark text-white"> Student </button>
-          <button type="button" aria-label="Owner/Realtor" className=" rounded-md p-1 w-full bg-poly-green-dark text-white"> Owner/Realtor </button>
+          <button type="button" aria-label="Student" className=" rounded-md p-1 w-full bg-poly-green-dark text-white active:bg-button-click"> Student </button>
+          <button type="button" aria-label="Owner/Realtor" className=" rounded-md p-1 w-full bg-poly-green-dark text-white active:bg-button-click"> Owner/Realtor </button>
         </div>
 
         <div className=" flex flex-row  gap-5 ">
@@ -62,12 +65,12 @@ export default function Home() {
         </div>
         <div className=" flex flex-col justify-start gap-3">
           <label htmlFor="Email_Address">Email Address</label>
-            <input type="text" placeholder="Enter your Email Adress" className="border rounded-md p-2 bg-white  border-border-inputs"/>
+            <input type="email" placeholder="Enter your Email Adress" className="border rounded-md p-2 bg-white  border-border-inputs"/>
 
         </div>
         <div className=" flex flex-col justify-start gap-3">
           <label htmlFor="Password">Password</label>
-            <input type="password" placeholder="Enter your Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
+          <input type="password" placeholder="Enter your Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
 
         </div>
         <div className=" flex flex-col justify-start gap-3 ">
@@ -75,10 +78,19 @@ export default function Home() {
             <input type="password" placeholder="Confirm Password" className="border rounded-md p-2 bg-white  border-border-inputs"/>
           <p className="text-under-input text-sm">At least 8 characters with a number or symbol</p>
         </div>
-
+       <div className="flex flex-row items-center gap-2">
+        <input
+          type="checkbox"
+          className="h-4 w-4 accent-green-800"
+        />
+        <span className="text-sm">
+          Send me housing updates by email (Optional)
+        </span>
+      </div>
         <div className="flex flex-row justify-center mt-10">
-            <button type="button" aria-label="Create Account" className=" rounded-md p-1 w-full  bg-poly-green-dark text-white"> Create Account</button>
+            <button type="button" aria-label="Create Account" className=" rounded-md p-1 w-full  bg-poly-green-dark text-white active:bg-button-click"> Create Account</button>
         </div>
+
 
       </div>
 

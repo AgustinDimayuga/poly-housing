@@ -9,7 +9,9 @@
   --color-poly-green-light :#F7F7F2;
   --color-poly-green-dark:  #24634C;
   --color-border-inputs: #DDE3DB;
-  --color-under-input: #6D7770
+  --color-under-input: #6D7770;
+  --color-button-click: #023020;
+  --font-inter: "Inter", sans-serif;
 }
 
 /* @media (prefers-color-scheme: dark) {
