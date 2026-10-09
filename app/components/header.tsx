@@ -21,7 +21,7 @@ export default function Header() {
         <div className="flex flex-row justify-end gap-50 ">
 
             <Button variant="white" className=" p-2"> + Post Listing</Button>
-            <p className=" font-inter font-bold hover:underline"> Log in </p>
+            <p className=" font-inter font-bold hover:underline mt-1 mr-10"> Log in </p>
 
         </div>
 

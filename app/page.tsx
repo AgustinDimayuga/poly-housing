@@ -6,7 +6,7 @@ export default function Home() {
   return (
 
 
-      <div className="grid grid-cols-2 bg-poly-green-light min-h-screen">
+      <div className="grid grid-cols-2 bg-poly-green-light min-h-screen pb-[10  %]">
         {/* Right Side of the Page */}
         <div className="grid grid-rows ml-15">
 
@@ -65,7 +65,6 @@ export default function Home() {
 
 
           <Textbox placeholder="Please Enter Your Email"> Email</Textbox>
-
 
 
           <Textbox placeholder="Please Enter Your Password" type="password"> Password </Textbox>
