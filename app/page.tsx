@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Button from "./components/button";
 import Textbox from "./components/text";
-
+import Bubble_text from "./Listings/components/bubble";
 export default function Home() {
   return (
 
@@ -11,7 +11,7 @@ export default function Home() {
         <div className="grid grid-rows ml-15">
 
           <div className="flex flex-col gap-10 items-start mt-10">
-            <p className=" inline-block text-poly-green-dark p-2 rounded-2xl bg-mini-labels text-sm"> Built around student life</p>
+            <Bubble_text variant="Message">Built Around Student Life </Bubble_text>
             <h1 className="text-4xl font-semibold font-inter text-signup-title-green"> Your off-campus search,<br/> all in one place.</h1>
           <p className="text-under-input">Student-friendly homes, quarter-length subleases and the details you <br/> need before signing</p>
           <Image src="/polyhouse-signup.jpg" width={600} height={100} alt="Picture of House" className="rounded-2xl"/>
