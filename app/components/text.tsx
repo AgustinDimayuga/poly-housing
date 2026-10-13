@@ -1,21 +1,29 @@
-import type { ReactNode} from "react";
+import type { ReactNode, InputHTMLAttributes } from "react";
 
-
-type TextboxProps = {
+type TextboxProps = InputHTMLAttributes<HTMLInputElement> & {
   children: ReactNode;
-  placeholder?: string;
-  styling?: string;
-  id?: string;
-  type?:string;
 };
 
-const css = 'border rounded-md p-2 bg-white  border-border-inputs'
+const css = "border rounded-md p-2 bg-white border-border-inputs";
 
-export default function Textbox({ children, id= "",placeholder = " ",type="", styling = css, ...props} :TextboxProps){
-      return(
-       <div className="flex flex-col justify-self-auto w-full gap-3 ">
-            <label htmlFor={id} >{children}</label>
-            <input id ={id} type={type} placeholder={placeholder} className={styling} {...props}/>
-        </div>
-    )
+export default function Textbox({
+  children,
+  id = "",
+  placeholder = "",
+  type = "text",
+  className = "",
+  ...props
+}: TextboxProps) {
+  return (
+    <div className="flex flex-col justify-self-auto w-full gap-3">
+      <label htmlFor={id}>{children}</label>
+      <input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        className={`${css} ${className}`}
+        {...props}
+      />
+    </div>
+  );
 }

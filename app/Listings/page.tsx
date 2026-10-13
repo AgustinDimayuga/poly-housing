@@ -2,6 +2,7 @@ import Title from "./components/titles";
 import Bubble_text from "./components/bubble";
 import Button from "../components/button";
 import Image from "next/image";
+import Listing_Summary from "./components/summary";
 export default function listing(){
 
     return(
@@ -12,9 +13,9 @@ export default function listing(){
                 <div>
                     <Title address="426 Lafond Road, Tipton CA 93274">Faze_FBI_1337 House </Title>
                     <div className="flex flex-row gap-3 mt-5">
-                        <Bubble_text variant="Message">Dangeroud Neighborhood  </Bubble_text>
+                        <Bubble_text variant="Message">Dangerous Neighborhood  </Bubble_text>
                         <Bubble_text variant="Message">Carne Asada Grill </Bubble_text>
-                        <Bubble_text variant="Review" rating={5} reviews={100} > W Backyard  </Bubble_text>
+                        <Bubble_text variant="Review" rating={1} reviews={2} >  </Bubble_text>
 
                     </div>
 
@@ -35,6 +36,20 @@ export default function listing(){
 
                 </div>
 
+
+            </div>
+
+
+
+            <div className="grid grid-cols-[70%_30%]">
+                <div>
+
+                </div>
+
+                <div>
+
+                    <Listing_Summary></Listing_Summary>
+                </div>
 
             </div>
 
