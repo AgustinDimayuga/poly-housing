@@ -33,6 +33,13 @@ export function GET(request: Request) {
 
 export async function POST(request: Request) {
   const reviewToAdd = await request.json();
+  if (reviewToAdd === undefined) {
+    return NextResponse.json(
+      { error: "review is not defined" },
+      { status: 400 }
+    );
+  }
+
   reviews.push(reviewToAdd);
   return NextResponse.json(reviewToAdd, { status: 201 });
 }

@@ -72,6 +72,13 @@ export function GET(request: Request) {
 export async function POST(request: Request) {
   const newListing = await request.json();
 
+  if (newListing === undefined) {
+    return NextResponse.json(
+      { error: "listing is not defined" },
+      { status: 400 }
+    );
+  }
+
   listings.push(newListing);
   return NextResponse.json(newListing, { status: 201 });
 }

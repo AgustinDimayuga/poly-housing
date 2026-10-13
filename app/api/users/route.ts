@@ -24,6 +24,7 @@ interface Realtor extends User {
   verifed: boolean;
   contactEmail: string;
   contactPhone: string;
+  //logo:
 }
 
 const users: User[] = [
@@ -45,6 +46,7 @@ const users: User[] = [
   }
 ];
 
+//will need to convert this and all other functions in the backend to work with the database
 export function GET(request: Request) {
   return NextResponse.json(users);
 }
@@ -53,7 +55,10 @@ export async function POST(request: Request) {
   const newUser = await request.json();
 
   if (newUser === null) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "user was not defined" },
+      { status: 400 }
+    );
   }
 
   users.push(newUser);
