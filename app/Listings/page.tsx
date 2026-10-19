@@ -3,6 +3,56 @@ import Bubble_text from "./components/bubble"
 import Button from "../components/button"
 import Image from "next/image"
 import Listing_Summary from "./components/summary"
+import ImportantInformation from "./components/important-information"
+import ListingPricing from "./components/pricing"
+import type { ListingPricingProps } from "./components/pricing"
+import ListingReviews from "./components/reviews"
+import type { ListingReviewsProps } from "./components/reviews"
+
+const listingReviews: ListingReviewsProps = {
+    averageRating: 4.6,
+    reviewCount: 8,
+    reviews: [
+        {
+            id: "maya-r",
+            name: "Maya R.",
+            residency: "Lived here Sep 2025 – Aug 2026",
+            rating: 5,
+            comment: "The shared spaces made living with roommates easy. Our landlord replied quickly when the dryer stopped working. Budget a little extra for winter gas bills.",
+        },
+        {
+            id: "alex-t",
+            name: "Alex T.",
+            residency: "Lived here Sep 2024 – Aug 2025",
+            rating: 4,
+            comment: "Quiet street and a manageable bike ride to campus. The rooms vary in size, so we agreed on the rent split before signing.",
+        },
+    ],
+    note: "Reviews reflect residents’ personal experiences, not a property inspection.",
+}
+
+const listingPricing: ListingPricingProps = {
+    rentLabel: "Base rent · entire home",
+    baseRent: "$3,600 / month",
+    availability: "Available Sep 1, 2027",
+    estimatedMonthlyTotal: "$3,750–$3,830",
+    estimateDescription: "Rent + estimated extra utilities",
+    includedCosts: [
+        { label: "Water & sewer", amount: "Included" },
+        { label: "Trash collection", amount: "Included" },
+        { label: "Two parking spaces", amount: "Included" },
+    ],
+    separateCosts: [
+        { label: "Electricity & gas", amount: "Est. $100–$160/mo" },
+        { label: "Internet", amount: "Est. $50–$70/mo" },
+        { label: "Renter’s insurance", amount: "Provider varies" },
+    ],
+    fees: [
+        { label: "Refundable security deposit", amount: "$3,600 · one time" },
+        { label: "Application fee", amount: "$35 per applicant" },
+    ],
+    note: "Estimates are landlord-provided for the entire home, not a quote. Usage and provider rates may vary; insurance is not included in the total above.",
+}
 
 export default function ListingPage() {
     return (
@@ -36,7 +86,7 @@ export default function ListingPage() {
                         <Image src="/polyhouse-signup.jpg" alt="Living room" fill className="rounded-2xl object-cover" />
                     </div>
                     <div className="relative">
-                        <Image src="/polyhouse-signup.jpg" alt="Kitchen" fill className="rounded-2xl object-cover" />
+                        <Image src="/polyhouse-signudop.jpg" alt="Kitchen" fill className="rounded-2xl object-cover" />
                     </div>
                 </div>
 
@@ -57,7 +107,19 @@ export default function ListingPage() {
                                 <Bubble_text variant="Message">Bike storage</Bubble_text>
                             </div>
                         </div>
-                        {/* pricing + reviews sections go here */}
+                        <ImportantInformation viewerRole="user" />
+                        <ListingPricing {...listingPricing} />
+                        <ListingReviews
+                            {...listingReviews}
+                            action={
+                                <Button variant="white" className="flex items-center gap-2 px-4 py-3 font-semibold !text-signup-title-green">
+                                    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="m16 3 5 5M3 21l5-1L21 7a3.54 3.54 0 0 0-5-5L3 15l-1 7Z" />
+                                    </svg>
+                                    Write a review
+                                </Button>
+                            }
+                        />
                     </div>
 
                     <aside>
