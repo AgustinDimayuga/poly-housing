@@ -86,7 +86,7 @@ export default function ListingPage() {
                         <Image src="/polyhouse-signup.jpg" alt="Living room" fill className="rounded-2xl object-cover" />
                     </div>
                     <div className="relative">
-                        <Image src="/polyhouse-signudop.jpg" alt="Kitchen" fill className="rounded-2xl object-cover" />
+                        <Image src="/polyhouse-signup.jpg" alt="Kitchen" fill className="rounded-2xl object-cover" />
                     </div>
                 </div>
 
