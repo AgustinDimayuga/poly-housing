@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:17
+    container_name: poly-housing-postgres
+    environment:
+      POSTGRES_USER: polyhousing
+      POSTGRES_PASSWORD: polyhousing
+      POSTGRES_DB: polyhousing
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U polyhousing -d polyhousing"
+        ]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  pgdata:
