@@ -48,7 +48,7 @@ export default function Home() {
           <p className="mt-3 text-under-input hover:underline lg:mt-5">Already have an account?</p>
         </div>
 
-        <p className="font-inter">m here as a...</p>
+        <p className="font-inter">Im here as a...</p>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-10">
           <Button variant="primary" aria-label="Student" className="h-10 w-full">Student</Button>

@@ -3,7 +3,7 @@ import Link from "next/link"
 import Button from "./button"
 
 const links = [
-  { label: "Find housing", href: "#" },
+  { label: "Find housing", href: "/Listings" },
   { label: "Subleases", href: "#" },
   { label: "Saved homes", href: "#" },
 ]
