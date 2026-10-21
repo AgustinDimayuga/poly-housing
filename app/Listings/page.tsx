@@ -114,7 +114,7 @@ export default function ListingPage() {
                             action={
                                 <Button variant="white" className="flex items-center gap-2 px-4 py-3 font-semibold !text-signup-title-green">
                                     <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="m16 3 5 5M3 21l5-1L21 7a3.54 3.54 0 0 0-5-5L3 15l-1 7Z" />
+                                        <path  />
                                     </svg>
                                     Write a review
                                 </Button>
