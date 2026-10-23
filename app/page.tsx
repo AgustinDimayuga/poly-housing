@@ -1,23 +1,25 @@
 import Image from "next/image";
 import Button from "./components/button";
 import Textbox from "./components/text";
-import Bubble_text from "./Listings/components/bubble";
+import Bubble_text from "./components/bubble";
 
 export default function Home() {
   return (
     <div className="grid min-h-screen grid-cols-1 bg-poly-green-light lg:grid-cols-2">
-
       {/* Left side: marketing */}
       <div className="flex min-w-0 flex-col gap-10 px-6 pt-8 lg:pl-15 lg:pr-0 lg:pt-10">
         <div className="flex flex-col items-start gap-6 lg:gap-10">
-          <Bubble_text variant="Message">Built Around Student Life</Bubble_text>
+          <Bubble_text variant="Message">
+            Built Around Student Life
+          </Bubble_text>
 
           <h1 className="font-inter text-3xl font-semibold text-signup-title-green lg:text-4xl">
             Your off-campus search, all in one place.
           </h1>
 
           <p className="max-w-md text-under-input">
-            Student-friendly homes, quarter-length subleases and the details you need before signing
+            Student-friendly homes, quarter-length subleases and
+            the details you need before signing
           </p>
 
           <div className="relative aspect-[3/2] w-full max-w-[600px]">
@@ -32,49 +34,101 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <h2 className="font-bold text-signup-title-green">Keep your shortlist together</h2>
-          <h2 className="mb-2 text-under-input">Save homes and notes for your roommate group</h2>
-          <h2 className="font-bold text-signup-title-green">Connect with the right person</h2>
-          <h2 className="mb-2 text-under-input">Reach owners, realtors and students directly</h2>
-          <h2 className="font-bold text-signup-title-green">Plan for your move-in</h2>
-          <h2 className="text-under-input">Search by dates, not just immediate vacancies</h2>
+          <h2 className="font-bold text-signup-title-green">
+            Keep your shortlist together
+          </h2>
+          <h2 className="mb-2 text-under-input">
+            Save homes and notes for your roommate group
+          </h2>
+          <h2 className="font-bold text-signup-title-green">
+            Connect with the right person
+          </h2>
+          <h2 className="mb-2 text-under-input">
+            Reach owners, realtors and students directly
+          </h2>
+          <h2 className="font-bold text-signup-title-green">
+            Plan for your move-in
+          </h2>
+          <h2 className="text-under-input">
+            Search by dates, not just immediate vacancies
+          </h2>
         </div>
       </div>
 
       {/* Right side: signup form */}
       <div className="flex min-w-0 flex-col gap-5 px-6 py-10 lg:pl-0 lg:pr-20 lg:pt-20">
         <div>
-          <h1 className="font-inter text-3xl font-bold lg:text-4xl">Create your account</h1>
-          <p className="mt-3 text-under-input hover:underline lg:mt-5">Already have an account?</p>
+          <h1 className="font-inter text-3xl font-bold lg:text-4xl">
+            Create your account
+          </h1>
+          <p className="mt-3 text-under-input hover:underline lg:mt-5">
+            Already have an account?
+          </p>
         </div>
 
         <p className="font-inter">Im here as a...</p>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-10">
-          <Button variant="primary" aria-label="Student" className="h-10 w-full">Student</Button>
-          <Button variant="white" aria-label="Owner/Realtor" className="h-10 w-full">Owner/Realtor</Button>
+          <Button
+            variant="primary"
+            aria-label="Student"
+            className="h-10 w-full">
+            Student
+          </Button>
+          <Button
+            variant="white"
+            aria-label="Owner/Realtor"
+            className="h-10 w-full">
+            Owner/Realtor
+          </Button>
         </div>
 
         <div className="flex flex-col gap-5 sm:flex-row">
-          <Textbox placeholder="Enter your first name">First Name</Textbox>
-          <Textbox placeholder="Enter your last name">Last Name</Textbox>
+          <Textbox placeholder="Enter your first name">
+            First Name
+          </Textbox>
+          <Textbox placeholder="Enter your last name">
+            Last Name
+          </Textbox>
         </div>
 
-        <Textbox placeholder="Please enter your email" type="email">Email</Textbox>
+        <Textbox
+          placeholder="Please enter your email"
+          type="email">
+          Email
+        </Textbox>
 
-        <Textbox placeholder="Please enter your password" type="password">Password</Textbox>
+        <Textbox
+          placeholder="Please enter your password"
+          type="password">
+          Password
+        </Textbox>
 
         <div className="flex flex-col gap-3">
-          <Textbox placeholder="Confirm password" type="password">Confirm Password</Textbox>
-          <p className="text-sm text-under-input">At least 8 characters with a number or symbol</p>
+          <Textbox
+            placeholder="Confirm password"
+            type="password">
+            Confirm Password
+          </Textbox>
+          <p className="text-sm text-under-input">
+            At least 8 characters with a number or symbol
+          </p>
         </div>
 
         <label className="flex items-center gap-2">
-          <input type="checkbox" className="h-4 w-4 accent-green-800" />
-          <span className="text-sm">Send me housing updates by email (optional)</span>
+          <input
+            type="checkbox"
+            className="h-4 w-4 accent-green-800"
+          />
+          <span className="text-sm">
+            Send me housing updates by email (optional)
+          </span>
         </label>
 
-        <Button variant="primary" aria-label="Create Account" className="mt-4 h-10 w-full lg:mt-10">
+        <Button
+          variant="primary"
+          aria-label="Create Account"
+          className="mt-4 h-10 w-full lg:mt-10">
           Create Account
         </Button>
       </div>
@@ -82,7 +136,8 @@ export default function Home() {
   );
 }
 
-{/* <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+{
+  /* <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <Image
           className="dark:invert h-5 w-[100px]"
@@ -144,4 +199,5 @@ export default function Home() {
           </a>
         </div>
       </main>
-    </div> */}
+    </div> */
+}

@@ -41,11 +41,6 @@
 
                 # psql client for the Docker Postgres
                 postgresql_17
-                dbeaver-bin
-
-                # Docker CLI (the daemon runs outside the shell)
-                docker-client
-                docker-compose
 
                 git
                 jq
