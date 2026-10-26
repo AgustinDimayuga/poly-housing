@@ -17,24 +17,25 @@ export default function Home() {
 
   const [ifStudent, setifStudent] = React.useState(true)
 
+  const [ifMatching, setifMatching] = React.useState(true)
+
   // function changeType(){
 
   //   setUserType("realtor");
 
   // }
 
-  async function onSubmit(event: SubmitEvent<HTMLFormElement>){
+  async function createUser(event: SubmitEvent<HTMLFormElement>){
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
 
     formData.append("usertype", userType);
 
+    //testing
     const firstName = formData.get("fname")
     const lastName = formData.get("lname")
     const typeOfUser = formData.get("usertype")
-
-
     const email = formData.get("email")
     const password = formData.get("password")
     const confirmPass = formData.get("confirmpass")
@@ -43,10 +44,24 @@ export default function Home() {
     console.log(`fname: ${firstName} lname: ${lastName} typeofUser: ${typeOfUser}
       email: ${email} password: ${password} confirmPass: ${confirmPass} wantUpdates: ${wantUpdates}`)
 
+    console.log(firstName)
+
+
+      // if(password !== confirmPass){
+      //   setifMatching(false);
+      //   return
+      // } else {
+      //   setifMatching(true);
+      // }
+
+      password !== confirmPass ? setifMatching(false) : setifMatching(true);
+
+
 
     // console.log(formData);
 
     // console.log(formData.get("email"));
+
     // const response = await fetch('', {
     //   method: "POST",
     //   body: "hi" //data here
@@ -114,7 +129,7 @@ export default function Home() {
       </div>
 
       {/* Right side: signup form */}
-      <form className="flex min-w-0 flex-col gap-5 px-6 py-10 lg:pl-0 lg:pr-20 lg:pt-20" onSubmit={onSubmit}>
+      <form className="flex min-w-0 flex-col gap-5 px-6 py-10 lg:pl-0 lg:pr-20 lg:pt-20" onSubmit={createUser}>
 
       {/* <div className="flex min-w-0 flex-col gap-5 px-6 py-10 lg:pl-0 lg:pr-20 lg:pt-20"> */}
         <div>
@@ -153,10 +168,10 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col gap-5 sm:flex-row">
-          <Textbox placeholder="Enter your first name" name="fname">
+          <Textbox placeholder="Enter your first name" name="fname" required>
             First Name
           </Textbox>
-          <Textbox placeholder="Enter your last name" name="lname">
+          <Textbox placeholder="Enter your last name" name="lname" required>
             Last Name
           </Textbox>
         </div>
@@ -164,24 +179,29 @@ export default function Home() {
         <Textbox
           placeholder="Please enter your email"
           type="email"
-          name="email">
+          name="email"
+          required>
           Email
         </Textbox>
 
         <Textbox
           placeholder="Please enter your password"
           type="password"
-          name="password">
+          name="password"
+          required>
           Password
         </Textbox>
 
         <div className="flex flex-col gap-3">
           <Textbox
             placeholder="Confirm password"
+            className={!ifMatching ? "border-red-500" : ""}
             type="password"
-            name="confirmpass">
+            name="confirmpass"
+            required>
             Confirm Password
           </Textbox>
+          {!ifMatching && <p className="text-red-500 text-sm">Passwords must match</p>}
           <p className="text-sm text-under-input">
             At least 8 characters with a number or symbol
           </p>
