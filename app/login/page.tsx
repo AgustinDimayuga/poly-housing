@@ -12,20 +12,21 @@ export default function LoginPage() {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget);
-    // const response = await fetch('',{
-    //   method: 'POST',
-    //   body: formData
-    // })
 
     // const data = await response.json()
 
-
-    //do something to match passwords
 
     //testing
 
     const email = formData.get("email")
     const password = formData.get("password")
+
+    //retrieve password and check if they are matching
+
+    // const response = await fetch('http://127.0.0.1:8000/users/',{
+    //   method: 'POST',
+    //   body: formData
+    // })
 
     console.log(email)
     console.log(password)
@@ -53,10 +54,13 @@ export default function LoginPage() {
             </div> */}
 
       {/* <div className="flex flex-col mr-20 mt-20 gap-5"> */}
-      <div className="flex flex-col mt-20 gap-5 w-120">
+      {/* <div className="flex flex-col mt-20 gap-5 w-120"> */}
+       <form className="flex flex-col mt-20 gap-5 w-120" onSubmit={loginUser}>
+
         <h1 className="text-4xl font-inter font-bold">
           Login to PolyHousing
         </h1>
+
         <p className="mt-5">
           new here?{" "}
           <Link href="./" className="text-under-input hover:underline">
@@ -64,20 +68,16 @@ export default function LoginPage() {
           </Link>
         </p>
 
-
-
-
-
-        <form onSubmit={loginUser}>
-
         <div className="">
           {/* <h2>email address</h2> */}
-          <Textbox name="email">email address</Textbox>
+          <Textbox name="email" required>email address</Textbox>
         </div>
+
         <div className="">
           {/* <h2>password</h2> */}
-          <Textbox name="password" type="password">password</Textbox>
+          <Textbox name="password" type="password" required>password</Textbox>
         </div>
+
         <div className="flex flex-row items-center gap-2">
           <label>
             <input
@@ -88,6 +88,7 @@ export default function LoginPage() {
             <span className="text-sm"> stay logged in?</span>
           </label>
         </div>
+
         <div>
           <Button
             variant="primary"
@@ -100,11 +101,7 @@ export default function LoginPage() {
 
         </form>
 
-
-
-
-
-      </div>
+      {/* </div> */}
 
     </div>
   );

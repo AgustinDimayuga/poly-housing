@@ -11,71 +11,57 @@ import React from "react";
 
 export default function Home() {
 
-  // let userType: string = "student";
-
-  const [userType, setUserType] = React.useState("student");
-
+  const [userType, setUserType] = React.useState("Student");
   const [ifStudent, setifStudent] = React.useState(true)
-
   const [ifMatching, setifMatching] = React.useState(true)
-
-  // function changeType(){
-
-  //   setUserType("realtor");
-
-  // }
 
   async function createUser(event: SubmitEvent<HTMLFormElement>){
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
 
-    formData.append("usertype", userType);
+    // formData.append("usertype", userType);
 
-    //testing
     const firstName = formData.get("fname")
     const lastName = formData.get("lname")
-    const typeOfUser = formData.get("usertype")
+    // const typeOfUser = formData.get("usertype")
     const email = formData.get("email")
     const password = formData.get("password")
     const confirmPass = formData.get("confirmpass")
     const wantUpdates = formData.get("wantupdates")
 
-    console.log(`fname: ${firstName} lname: ${lastName} typeofUser: ${typeOfUser}
-      email: ${email} password: ${password} confirmPass: ${confirmPass} wantUpdates: ${wantUpdates}`)
+    const fullName = `${firstName} ${lastName}`
 
-    console.log(firstName)
+    if(password !== confirmPass){
+      setifMatching(false);
+      return
+    } else {
+      setifMatching(true);
+    }
 
+    const newUser = {
+        name: fullName,
+        email: email,
+        role: userType
+      }
 
-      // if(password !== confirmPass){
-      //   setifMatching(false);
-      //   return
-      // } else {
-      //   setifMatching(true);
-      // }
+    const response = await fetch('http://127.0.0.1:8000/users', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newUser)
+    })
 
-      password !== confirmPass ? setifMatching(false) : setifMatching(true);
+    if(response.status === 201){
+      console.log("created new user")
+      redirect("/Listings")
+    }
 
+    //do something when user isn't created
 
-
-    // console.log(formData);
-
-    // console.log(formData.get("email"));
-
-    // const response = await fetch('', {
-    //   method: "POST",
-    //   body: "hi" //data here
-    // })
-
-      //handle response
-    // const data = await response.json();
-
-
-    //redirect("/Listings");
 
   }
-
-
 
   return (
     <div className="grid min-h-screen grid-cols-1 bg-poly-green-light lg:grid-cols-2">
@@ -150,17 +136,18 @@ export default function Home() {
             aria-label="Student"
             className="h-10 w-full"
             onClick={() => {
-              setUserType("student");
+              setUserType("Student");
               setifStudent(true);
               }}>
             Student
           </Button>
+
           <Button
             variant={!ifStudent ? "primary" : "white"}
             aria-label="Owner/Realtor"
             className="h-10 w-full"
             onClick={() => {
-              setUserType("realtor");
+              setUserType("Realtor");
               setifStudent(false)}}>
             Owner/Realtor
           </Button>
@@ -171,6 +158,7 @@ export default function Home() {
           <Textbox placeholder="Enter your first name" name="fname" required>
             First Name
           </Textbox>
+
           <Textbox placeholder="Enter your last name" name="lname" required>
             Last Name
           </Textbox>
