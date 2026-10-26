@@ -20,8 +20,7 @@ export default function Preferences() {
             </p>
             <Button
               variant="white"
-              disabled
-              className="border-0! bg-transparent! p-0! text-poly-green-dark!">
+              className="border-0! p-0! text-poly-green-dark!">
               Reset
             </Button>
           </div>
@@ -29,7 +28,6 @@ export default function Preferences() {
             <Textbox
               id="browse-rent"
               defaultValue="Up to $4,500"
-              readOnly
               className="h-11 w-full text-xs font-normal">
               Monthly rent · entire home
             </Textbox>
@@ -48,7 +46,6 @@ export default function Preferences() {
                 <Button
                   key={beds}
                   variant="white"
-                  disabled
                   className="border-0! bg-transparent! px-1 py-0 text-xs">
                   {beds}
                 </Button>
@@ -59,7 +56,6 @@ export default function Preferences() {
             <Textbox
               id="browse-move-in"
               defaultValue="Aug 15 – Sep 15, 2027"
-              readOnly
               className="h-11 w-full min-w-0 text-xs font-normal">
               Move-in date
             </Textbox>
@@ -68,7 +64,6 @@ export default function Preferences() {
             <Textbox
               id="browse-lease-length"
               defaultValue="Academic year or 12 months"
-              readOnly
               className="h-11 w-full min-w-0 text-xs font-normal">
               Lease length
             </Textbox>
@@ -108,7 +103,7 @@ export default function Preferences() {
                     <input
                       type="checkbox"
                       defaultChecked={option.checked}
-                      disabled
+
                       className="size-4 rounded border-border-inputs accent-poly-green-dark"
                     />
                     {option.label}
@@ -118,7 +113,7 @@ export default function Preferences() {
             </fieldset>
           ))}
           <Button
-            disabled
+
             className="h-10 w-full text-xs font-semibold sm:col-span-2 lg:col-span-1">
             Apply filters
           </Button>
