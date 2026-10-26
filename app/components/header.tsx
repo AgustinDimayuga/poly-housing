@@ -34,7 +34,7 @@ export default function Header() {
         {/* Right: actions, with margin from the edge */}
         <div className="hidden items-center gap-5 md:mr-6 md:flex lg:mr-12">
           <Button variant="white" className="whitespace-nowrap p-2">+ Post listing</Button>
-          <Link href="#" className="whitespace-nowrap font-inter font-bold hover:underline">Log in</Link>
+          <Link href="./login" className="whitespace-nowrap font-inter font-bold hover:underline">Log in</Link>
         </div>
 
         {/* Mobile menu */}
@@ -58,7 +58,7 @@ export default function Header() {
             </ul>
             <hr className="border-border-inputs" />
             <Button variant="white" className="p-2">+ Post listing</Button>
-            <Link href="#" className="font-inter font-bold hover:underline">Log in</Link>
+            <Link href="./login" className="font-inter font-bold hover:underline">Log in</Link>
           </div>
         </details>
       </div>
