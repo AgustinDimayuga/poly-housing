@@ -1,9 +1,67 @@
+'use client'
+
 import Image from "next/image";
 import Button from "./components/button";
 import Textbox from "./components/text";
 import Bubble_text from "./components/bubble";
+import Link from "next/link";
+import { SubmitEvent } from "react";
+import { redirect } from "next/navigation";
+import React from "react";
 
 export default function Home() {
+
+  // let userType: string = "student";
+
+  const [userType, setUserType] = React.useState("student");
+
+  const [ifStudent, setifStudent] = React.useState(true)
+
+  // function changeType(){
+
+  //   setUserType("realtor");
+
+  // }
+
+  async function onSubmit(event: SubmitEvent<HTMLFormElement>){
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    formData.append("usertype", userType);
+
+    const firstName = formData.get("fname")
+    const lastName = formData.get("lname")
+    const typeOfUser = formData.get("usertype")
+
+
+    const email = formData.get("email")
+    const password = formData.get("password")
+    const confirmPass = formData.get("confirmpass")
+    const wantUpdates = formData.get("wantupdates")
+
+    console.log(`fname: ${firstName} lname: ${lastName} typeofUser: ${typeOfUser}
+      email: ${email} password: ${password} confirmPass: ${confirmPass} wantUpdates: ${wantUpdates}`)
+
+
+    // console.log(formData);
+
+    // console.log(formData.get("email"));
+    // const response = await fetch('', {
+    //   method: "POST",
+    //   body: "hi" //data here
+    // })
+
+      //handle response
+    // const data = await response.json();
+
+
+    //redirect("/Listings");
+
+  }
+
+
+
   return (
     <div className="grid min-h-screen grid-cols-1 bg-poly-green-light lg:grid-cols-2">
       {/* Left side: marketing */}
@@ -56,58 +114,72 @@ export default function Home() {
       </div>
 
       {/* Right side: signup form */}
-      <div className="flex min-w-0 flex-col gap-5 px-6 py-10 lg:pl-0 lg:pr-20 lg:pt-20">
+      <form className="flex min-w-0 flex-col gap-5 px-6 py-10 lg:pl-0 lg:pr-20 lg:pt-20" onSubmit={onSubmit}>
+
+      {/* <div className="flex min-w-0 flex-col gap-5 px-6 py-10 lg:pl-0 lg:pr-20 lg:pt-20"> */}
         <div>
           <h1 className="font-inter text-3xl font-bold lg:text-4xl">
             Create your account
           </h1>
-          <p className="mt-3 text-under-input hover:underline lg:mt-5">
+          <Link href="./login" className="mt-3 text-under-input hover:underline lg:mt-5">
             Already have an account?
-          </p>
+          </Link>
         </div>
 
         <p className="font-inter">Im here as a...</p>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-10">
+
           <Button
-            variant="primary"
+            variant={ifStudent ? "primary" : "white"}
             aria-label="Student"
-            className="h-10 w-full">
+            className="h-10 w-full"
+            onClick={() => {
+              setUserType("student");
+              setifStudent(true);
+              }}>
             Student
           </Button>
           <Button
-            variant="white"
+            variant={!ifStudent ? "primary" : "white"}
             aria-label="Owner/Realtor"
-            className="h-10 w-full">
+            className="h-10 w-full"
+            onClick={() => {
+              setUserType("realtor");
+              setifStudent(false)}}>
             Owner/Realtor
           </Button>
+
         </div>
 
         <div className="flex flex-col gap-5 sm:flex-row">
-          <Textbox placeholder="Enter your first name">
+          <Textbox placeholder="Enter your first name" name="fname">
             First Name
           </Textbox>
-          <Textbox placeholder="Enter your last name">
+          <Textbox placeholder="Enter your last name" name="lname">
             Last Name
           </Textbox>
         </div>
 
         <Textbox
           placeholder="Please enter your email"
-          type="email">
+          type="email"
+          name="email">
           Email
         </Textbox>
 
         <Textbox
           placeholder="Please enter your password"
-          type="password">
+          type="password"
+          name="password">
           Password
         </Textbox>
 
         <div className="flex flex-col gap-3">
           <Textbox
             placeholder="Confirm password"
-            type="password">
+            type="password"
+            name="confirmpass">
             Confirm Password
           </Textbox>
           <p className="text-sm text-under-input">
@@ -119,6 +191,7 @@ export default function Home() {
           <input
             type="checkbox"
             className="h-4 w-4 accent-green-800"
+            name="wantupdates"
           />
           <span className="text-sm">
             Send me housing updates by email (optional)
@@ -128,10 +201,14 @@ export default function Home() {
         <Button
           variant="primary"
           aria-label="Create Account"
-          className="mt-4 h-10 w-full lg:mt-10">
+          className="mt-4 h-10 w-full lg:mt-10"
+          type="submit">
           Create Account
         </Button>
-      </div>
+
+      {/* </div> */}
+
+      </form>
     </div>
   );
 }
