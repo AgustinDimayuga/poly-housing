@@ -4,7 +4,7 @@ import Icon from "./icon";
 
 export default function Preferences() {
   return (
-    <aside className="min-w-0">
+    <aside className="">
       <section
         className="rounded-xl border border-border-inputs bg-white p-5"
         aria-labelledby="preferences-title">

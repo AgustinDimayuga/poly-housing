@@ -31,7 +31,7 @@ export default function BrowseListingsPage() {
           </p>
         </section>
         <SearchBar />
-        <div className="mt-6 grid items-start gap-6 lg:grid-cols-[228px_minmax(0,1fr)]">
+        <div className="mt-6 grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
           <Preferences />
           <section
             className="min-w-0"
