@@ -1,5 +1,6 @@
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.routers import users
 
 from app.config import settings
 
@@ -14,6 +15,7 @@ app.add_middleware(
 )
 
 api = APIRouter(prefix="/api")
+users = users.router
 
 
 @api.get("/health", tags=["meta"])
@@ -22,3 +24,4 @@ def health():
 
 
 app.include_router(api)
+app.include_router(users)
