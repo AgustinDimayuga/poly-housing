@@ -112,9 +112,8 @@ export default function Preferences() {
               </div>
             </fieldset>
           ))}
-          <Button
 
-            className="h-10 w-full text-xs font-semibold sm:col-span-2 lg:col-span-1">
+          <Button className="h-10 w-full text-xs font-semibold sm:col-span-2 lg:col-span-1">
             Apply filters
           </Button>
         </div>
