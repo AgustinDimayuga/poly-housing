@@ -94,6 +94,6 @@ export default function BrowseListingsPage() {
         </div>
       </main>
       <Footer />
-    </div>
+      </div>
   );
 }
