@@ -65,7 +65,25 @@ def post_user(user: NewUser):
 
 @router.get("/{user_id}", response_model=User)
 def get_user(user_id: int):
-    pass
+    with db.engine.begin() as connection:
+        user = connection.execute(
+            sqlalchemy.text(
+                """
+                SELECT *
+                from users
+                WHERE id = :user_id
+                """
+            ),
+            [{"user_id": user_id}]
+        ).one()
+
+        #return the user with all of their info
+        return User(
+            id=user.id,
+            name=user.name,
+            email=user.email,
+            role=user.role
+        )
 
 
 #this needs to be updated to work with JWTs
@@ -93,5 +111,3 @@ def get_creds(user: LoginCreds):
             )
 
         return "success"
-
-

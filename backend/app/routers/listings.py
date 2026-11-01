@@ -1,0 +1,70 @@
+from sqlalchemy.exc import IntegrityError
+from fastapi import APIRouter, status, HTTPException
+from pydantic import BaseModel, Field
+import sqlalchemy
+from app import db
+
+
+router = APIRouter(
+    prefix="listings",
+    tags=["listings"]
+)
+
+
+class Listing(BaseModel):
+    id: int
+    posterId: int
+    campus: str
+    city: str
+    type: str
+    bedroom: int
+    bathroom: int
+    square_ft: int
+    monthly_price: int
+    available_from: str
+    available_to: str
+    status: str
+    address: str
+    description: str
+    amenities: str
+
+class NewListing(BaseModel):
+    userId: int
+    address: str
+
+
+@router.post("/", responseModel=Listing)
+def create_listing(listing: NewListing):
+    with db.engine.begin() as connection:
+        listing_id = connection.execute(
+            sqlalchemy.text(
+                """
+                    INSERT INTO listing (poster_id, campus, city, type, bedroom, bathroom, square_ft,
+                    price_monthly, available_from, available_to, status, address, description, amenities)
+                    VALUES
+                """
+            ),
+            [{"poster_id": listing.userId}]
+        )
+
+        str.
+
+
+@router.get("/{listing_id}", responseModel=Listing)
+def get_listing(listing_id: int):
+    with db.engine.begin() as connection:
+        listing = connection.execute(
+            sqlalchemy.text(
+                """
+                SELECT *
+                from listing
+                WHERE id = :listing_id
+                """
+            ),
+            [{"listing_id": listing_id}]
+        ).one()
+
+        return Listing(
+            id=listing.id
+
+        )
