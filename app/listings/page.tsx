@@ -20,7 +20,7 @@ export default function BrowseListingsPage() {
           <p className="mb-1.5 text-[10px] font-bold text-poly-green-dark">
             OFF CAMPUS. ON YOUR TERMS.
           </p>
-          <h1
+            <h1
             id="browse-title"
             className="mb-2 text-[28px] leading-tight font-semibold tracking-[-0.6px] sm:text-[34px]">
             Find your next place in SLO.

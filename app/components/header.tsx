@@ -4,7 +4,7 @@ import Button from "./button";
 
 const links = [
   { label: "Find housing", href: "/listings" },
-  { label: "Subleases", href: "#" },
+  { label: "Subleases", href: "/subleasings" },
   { label: "Saved homes", href: "#" }
 ];
 
