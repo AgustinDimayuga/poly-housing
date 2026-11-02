@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Button from "./button";
+
 
 const links = [
   { label: "Find housing", href: "/listings" },
