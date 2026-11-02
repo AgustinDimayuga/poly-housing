@@ -54,7 +54,7 @@ export default function Home() {
 
     if(response.status === 201){
       console.log("created new user")
-      redirect("/Listings")
+      redirect("/listings")
     } else {
       setSuccess(false)
     }

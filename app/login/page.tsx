@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 export default function LoginPage() {
 
   const [ifcorrectPass, setPassState] = React.useState(true)
+  const [ifexistingEmail, setEmailState] = React.useState(true)
 
   async function loginUser(event: SubmitEvent<HTMLFormElement>){
     event.preventDefault()
@@ -34,10 +35,16 @@ export default function LoginPage() {
     })
 
     if(response.status === 200){
-      redirect("/Listings");
+      redirect("/listings");
     }
     else if (response.status === 401){
       setPassState(false);
+      setEmailState(true)
+      return
+    }
+    else if (response.status === 404){
+      setEmailState(false)
+      setPassState(true)
       return
     }
   }
@@ -62,6 +69,7 @@ export default function LoginPage() {
         <div className="">
           {/* <h2>email address</h2> */}
           <Textbox name="email" required>email address</Textbox>
+          {!ifexistingEmail && <p className="text-red-500 text-sm">Email not found</p>}
         </div>
 
         <div className="">

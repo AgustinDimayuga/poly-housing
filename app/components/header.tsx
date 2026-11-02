@@ -51,7 +51,7 @@ export default function Header() {
             + Post listing
           </Link>
           <Link
-            href="/login"
+            href="./login"
             className="whitespace-nowrap font-inter font-bold hover:underline">
             Log in
           </Link>
