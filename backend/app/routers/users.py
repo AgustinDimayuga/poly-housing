@@ -84,7 +84,13 @@ def get_creds(user: LoginCreds):
                 """
             ),
             [{"username": email}]
-        ).one()
+        ).one_or_none()
+
+        if creds is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="email not found"
+            )
 
         if creds.password != password:
             raise HTTPException(
@@ -93,5 +99,3 @@ def get_creds(user: LoginCreds):
             )
 
         return "success"
-
-

@@ -52,7 +52,7 @@ export default function Header() {
             + Post listing
           </Button>
           <Link
-            href="#"
+            href="./login"
             className="whitespace-nowrap font-inter font-bold hover:underline">
             Log in
           </Link>
@@ -85,7 +85,7 @@ export default function Header() {
               + Post listing
             </Button>
             <Link
-              href="#"
+              href="./login"
               className="font-inter font-bold hover:underline">
               Log in
             </Link>
