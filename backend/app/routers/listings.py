@@ -4,11 +4,7 @@ from pydantic import BaseModel, Field
 import sqlalchemy
 from app import db
 
-
-router = APIRouter(
-    prefix="listings",
-    tags=["listings"]
-)
+router = APIRouter(prefix="listings", tags=["listings"])
 
 
 class Listing(BaseModel):
@@ -28,43 +24,35 @@ class Listing(BaseModel):
     description: str
     amenities: str
 
+
 class NewListing(BaseModel):
     userId: int
     address: str
 
 
-@router.post("/", responseModel=Listing)
+@router.post("/", response_model=Listing)
 def create_listing(listing: NewListing):
     with db.engine.begin() as connection:
         listing_id = connection.execute(
-            sqlalchemy.text(
-                """
+            sqlalchemy.text("""
                     INSERT INTO listing (poster_id, campus, city, type, bedroom, bathroom, square_ft,
                     price_monthly, available_from, available_to, status, address, description, amenities)
                     VALUES
-                """
-            ),
-            [{"poster_id": listing.userId}]
+                """),
+            [{"poster_id": listing.userId}],
         )
 
-        str.
 
-
-@router.get("/{listing_id}", responseModel=Listing)
+@router.get("/{listing_id}", response_model=Listing)
 def get_listing(listing_id: int):
     with db.engine.begin() as connection:
         listing = connection.execute(
-            sqlalchemy.text(
-                """
+            sqlalchemy.text("""
                 SELECT *
                 from listing
                 WHERE id = :listing_id
-                """
-            ),
-            [{"listing_id": listing_id}]
+                """),
+            [{"listing_id": listing_id}],
         ).one()
 
-        return Listing(
-            id=listing.id
-
-        )
+        return Listing(id=listing.id)

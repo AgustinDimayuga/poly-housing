@@ -4,30 +4,30 @@ from pydantic import BaseModel, Field
 import sqlalchemy
 from app import db
 
-router = APIRouter(
-    prefix="/users",
-    tags=["users"]
-)
+router = APIRouter(prefix="/users", tags=["users"])
 
-#basic creds for now until we implement jwts
+
+# basic creds for now until we implement jwts
 class LoginCreds(BaseModel):
-    #currently in the user_cred table, it is listed as username instead of email, idk if we are using usernames or not
+    # currently in the user_cred table, it is listed as username instead of email, idk if we are using usernames or not
     email: str
     password: str
+
 
 #
 class NewUser(BaseModel):
     name: str
     email: str
-    #phone: str
+    # phone: str
     password: str
     role: str
+
 
 class User(BaseModel):
     id: int
     name: str
     email: str
-    #phone: int
+    # phone: int
     role: str
 
 
@@ -37,22 +37,26 @@ def post_user(user: NewUser):
     try:
         with db.engine.begin() as connection:
             user_id = connection.execute(
-                sqlalchemy.text(
-                """
+                sqlalchemy.text("""
                 INSERT INTO users (role, email, name)
                 VALUES (:role, :email, :name)
                 RETURNING id
                 """),
-                [{"role": user.role, "email": user.email, "name": user.name}]).scalar_one()
+                [{"role": user.role, "email": user.email, "name": user.name}],
+            ).scalar_one()
 
             connection.execute(
-                sqlalchemy.text(
-                    """
+                sqlalchemy.text("""
                     INSERT INTO user_cred (user_id, username, password)
                     VALUES (:user_id, :username, :password)
-                    """
-                ),
-                [{"user_id": user_id, "username": user.email, "password": user.password}]
+                    """),
+                [
+                    {
+                        "user_id": user_id,
+                        "username": user.email,
+                        "password": user.password,
+                    }
+                ],
             )
 
         return user
@@ -67,26 +71,19 @@ def post_user(user: NewUser):
 def get_user(user_id: int):
     with db.engine.begin() as connection:
         user = connection.execute(
-            sqlalchemy.text(
-                """
+            sqlalchemy.text("""
                 SELECT *
                 from users
                 WHERE id = :user_id
-                """
-            ),
-            [{"user_id": user_id}]
+                """),
+            [{"user_id": user_id}],
         ).one()
 
-        #return the user with all of their info
-        return User(
-            id=user.id,
-            name=user.name,
-            email=user.email,
-            role=user.role
-        )
+        # return the user with all of their info
+        return User(id=user.id, name=user.name, email=user.email, role=user.role)
 
 
-#this needs to be updated to work with JWTs
+# this needs to be updated to work with JWTs
 @router.post("/auth")
 def get_creds(user: LoginCreds):
     email = user.email
@@ -94,20 +91,17 @@ def get_creds(user: LoginCreds):
 
     with db.engine.begin() as connection:
         creds = connection.execute(
-            sqlalchemy.text(
-                """
+            sqlalchemy.text("""
                 SELECT username, password
                 FROM user_cred
                 WHERE username = :username
-                """
-            ),
-            [{"username": email}]
+                """),
+            [{"username": email}],
         ).one()
 
         if creds.password != password:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect password"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password"
             )
 
         return "success"
