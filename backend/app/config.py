@@ -10,6 +10,8 @@ class Settings(BaseSettings):
 
     database_url: str
     cors_origins: str = "http://localhost:3000"
+    secret_key: str
+    algorithm: str
 
     @property
     def cors_origin_list(self) -> list[str]:
