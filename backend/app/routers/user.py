@@ -11,7 +11,7 @@ from app.user_helper import *
 router = APIRouter(prefix="/user", tags=["user"])
 
 
-@router.get("/me/", response_model=User)
+@router.get("/me", response_model=User)
 async def read_users_me(
     current_token_data: Annotated[TokenData, Depends(get_token_data)],
 ):
