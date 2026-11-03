@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pwdlib import PasswordHash
 from sqlalchemy.sql.functions import user
-from app.model import TokenData, UserCredInDB
+from app.model import Role, TokenData, UserCredInDB
 
 
 from fastapi import Depends, HTTPException, status
@@ -78,7 +78,7 @@ def authenticate_user(connection: sqlalchemy.Connection, username: str, password
 
 def create_access_token(
     user_id: int,
-    role: str,
+    role: Role,
     expires_delta: timedelta | None = None,
 ) -> str:
     expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=45))
@@ -110,4 +110,4 @@ async def get_token_data(
         print("JWT error:", repr(e))
         raise credentials_exception
 
-    return TokenData(sub=int(user_id), name=role)
+    return TokenData(sub=int(user_id), role=role)

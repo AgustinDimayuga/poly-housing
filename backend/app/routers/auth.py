@@ -14,44 +14,35 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/users", response_model=Token, status_code=status.HTTP_201_CREATED)
 def create_user(user: NewUser):
-    with db.engine.begin() as connection:
-        user.email = user.email.strip().lower()
-        user.name = user.name.strip().lower()
-        hashed_password = get_password_hash(user.password)
-        user_id = connection.execute(
-            sqlalchemy.text("""
-                INSERT INTO users (role, email, name)
-                VALUES (:role, :email, :name)
-                RETURNING id
+    email = user.email.strip().lower()
+    name = user.name.strip()
+    hashed_password = get_password_hash(user.password)
+
+    try:
+        with db.engine.begin() as connection:
+            user_id = connection.execute(
+                sqlalchemy.text("""
+                    INSERT INTO users (role, email, name)
+                    VALUES (:role, :email, :name)
+                    RETURNING id
                 """),
-            [
-                {
-                    "role": user.role,
-                    "email": user.email,
-                    "name": user.name,
-                }
-            ],
-        ).scalar_one_or_none()
+                {"role": user.role.value, "email": email, "name": name},
+            ).scalar_one()
 
-        if user_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="User with provided email already exists",
-            )
-
-        connection.execute(
-            sqlalchemy.text("""
+            connection.execute(
+                sqlalchemy.text("""
                     INSERT INTO user_cred (user_id, password)
                     VALUES (:user_id, :password)
-                    """),
-            [
-                {
-                    "user_id": user_id,
-                    "password": hashed_password,
-                }
-            ],
+                """),
+                {"user_id": user_id, "password": hashed_password},
+            )
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="An account with that email already exists",
         )
-        signed_token = create_access_token(user_id=user_id, role=user.role)
+
+    signed_token = create_access_token(user_id=user_id, role=user.role)
     return Token(access_token=signed_token, token_type="bearer")
 
 
