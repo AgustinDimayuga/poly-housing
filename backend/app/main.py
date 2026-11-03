@@ -1,6 +1,6 @@
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth
+from app.routers import auth, user
 
 from app.config import settings
 
@@ -24,3 +24,4 @@ def health():
 
 app.include_router(api)
 app.include_router(auth.router)
+app.include_router(user.router)
