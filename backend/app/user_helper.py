@@ -5,7 +5,8 @@ import jwt
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pwdlib import PasswordHash
-from pydantic import BaseModel
+from sqlalchemy.sql.functions import user
+from app.model import TokenData, UserCredInDB
 
 
 from fastapi import Depends, HTTPException, status
@@ -13,19 +14,6 @@ from fastapi import Depends, HTTPException, status
 import sqlalchemy
 
 from app.config import settings
-
-
-class TokenData(BaseModel):
-    user_id: int
-    name: str
-
-
-class UserCredInDB(BaseModel):
-    user_id: int
-    username: str
-    hashed_password: str
-    name: str
-
 
 secret_key = settings.secret_key
 algorithm = settings.algorithm
@@ -51,7 +39,7 @@ def get_user_creds(connection: sqlalchemy.Connection, username: str) -> UserCred
     user = (
         connection.execute(
             sqlalchemy.text("""
-    SELECT id, email, password, name
+    SELECT id, email, password, role
     FROM users
     JOIN user_cred ON user_id = id
     WHERE email = :username
@@ -73,7 +61,7 @@ def get_user_creds(connection: sqlalchemy.Connection, username: str) -> UserCred
         user_id=user["id"],
         username=user["email"],
         hashed_password=user["password"],
-        name=user["name"],
+        role=user["role"],
     )
 
 
@@ -88,15 +76,18 @@ def authenticate_user(connection: sqlalchemy.Connection, username: str, password
     return user
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=45)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=algorithm)
-    return encoded_jwt
+def create_access_token(
+    user_id: int,
+    role: str,
+    expires_delta: timedelta | None = None,
+) -> str:
+    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=45))
+    to_encode = {
+        "sub": str(user_id),
+        "role": role,
+        "exp": expire,
+    }
+    return jwt.encode(to_encode, secret_key, algorithm=algorithm)
 
 
 async def get_token_data(
@@ -109,13 +100,14 @@ async def get_token_data(
     )
     try:
         payload = jwt.decode(token, secret_key, algorithm)
-        user_id = payload.get("user_id")
-        name = payload.get("name")
 
-        if user_id is None or name is None:
+        user_id = payload.get("sub")
+        role = payload.get("role")
+        if user_id is None or role is None:
             raise credentials_exception
 
     except InvalidTokenError as e:
+        print("JWT error:", repr(e))
         raise credentials_exception
 
-    return TokenData(user_id=user_id, name=name)
+    return TokenData(sub=int(user_id), name=role)
