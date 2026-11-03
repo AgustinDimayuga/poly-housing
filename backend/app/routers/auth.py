@@ -7,7 +7,7 @@ import sqlalchemy
 from app import db
 from app.user_helper import *
 
-router = APIRouter(prefix="/auth", tags=["users"])
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 # basic creds for now until we implement jwts
@@ -49,7 +49,13 @@ def create_user(user: NewUser):
                 VALUES (:role, :email, :name)
                 RETURNING id
                 """),
-            [{"role": user.role, "email": user.email, "name": user.name}],
+            [
+                {
+                    "role": user.role,
+                    "email": user.email,
+                    "name": user.name,
+                }
+            ],
         ).scalar_one_or_none()
 
         if user_id is None:
@@ -72,10 +78,8 @@ def create_user(user: NewUser):
         )
         signed_token = create_access_token(
             {
-                "user_id": user_id,
-                "name": user.name,
+                "sub": user_id,
                 "role": user.role,
-                "email": user.email,
             }
         )
     return Token(access_token=signed_token, token_type="bearer")
@@ -86,7 +90,11 @@ async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
     with db.engine.begin() as connection:
-        user = authenticate_user(connection, form_data.username, form_data.password)
+        user = authenticate_user(
+            connection,
+            form_data.username,
+            form_data.password,
+        )
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -94,5 +102,10 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    signed_token = create_access_token({"user_id": user.user_id, "name": user.name})
+    signed_token = create_access_token(
+        {
+            "sub": user.user_id,
+            "role": user.role,
+        }
+    )
     return Token(access_token=signed_token, token_type="bearer")

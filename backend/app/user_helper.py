@@ -24,7 +24,7 @@ class UserCredInDB(BaseModel):
     user_id: int
     username: str
     hashed_password: str
-    name: str
+    role: str
 
 
 secret_key = settings.secret_key
@@ -51,7 +51,7 @@ def get_user_creds(connection: sqlalchemy.Connection, username: str) -> UserCred
     user = (
         connection.execute(
             sqlalchemy.text("""
-    SELECT id, email, password, name
+    SELECT id, email, password, role
     FROM users
     JOIN user_cred ON user_id = id
     WHERE email = :username
@@ -73,7 +73,7 @@ def get_user_creds(connection: sqlalchemy.Connection, username: str) -> UserCred
         user_id=user["id"],
         username=user["email"],
         hashed_password=user["password"],
-        name=user["name"],
+        role=user["role"],
     )
 
 
