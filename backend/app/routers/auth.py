@@ -7,34 +7,9 @@ import sqlalchemy
 from app import db
 from app.user_helper import *
 
+from app.model import LoginCreds, NewUser, Token
+
 router = APIRouter(prefix="/auth", tags=["auth"])
-
-
-# basic creds for now until we implement jwts
-class LoginCreds(BaseModel):
-    # currently in the user_cred table, it is listed as username instead of email, idk if we are using usernames or not
-    email: str
-    password: str
-
-
-#
-class NewUser(BaseModel):
-    name: str
-    email: str
-    password: str
-    role: str
-
-
-class User(BaseModel):
-    id: int
-    name: str
-    email: str
-    role: str
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
 
 
 @router.post("/users", response_model=Token, status_code=status.HTTP_201_CREATED)
@@ -76,12 +51,7 @@ def create_user(user: NewUser):
                 }
             ],
         )
-        signed_token = create_access_token(
-            {
-                "sub": user_id,
-                "role": user.role,
-            }
-        )
+        signed_token = create_access_token(user_id=user_id, role=user.role)
     return Token(access_token=signed_token, token_type="bearer")
 
 
@@ -102,10 +72,5 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    signed_token = create_access_token(
-        {
-            "sub": user.user_id,
-            "role": user.role,
-        }
-    )
+    signed_token = create_access_token(user_id=user.user_id, role=user.role)
     return Token(access_token=signed_token, token_type="bearer")
