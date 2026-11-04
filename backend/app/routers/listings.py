@@ -37,7 +37,7 @@ def create_listing(listing: NewListing):
             sqlalchemy.text("""
                     INSERT INTO listing (poster_id, campus, city, type, bedroom, bathroom, square_ft,
                     price_monthly, available_from, available_to, status, address, description, amenities)
-                    VALUES
+                    VALUES hello
                 """),
             [{"poster_id": listing.userId}],
         )
