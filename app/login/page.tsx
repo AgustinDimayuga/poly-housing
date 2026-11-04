@@ -60,32 +60,32 @@ export default function LoginPage() {
         </h1>
 
         <p className="mt-5">
-          new here?{" "}
+          New here?{" "}
           <Link href="./" className="text-under-input hover:underline">
-            create an account -&gt;
+            Create an Account -&gt;
           </Link>
         </p>
 
         <div className="">
           {/* <h2>email address</h2> */}
-          <Textbox name="email" required>email address</Textbox>
+          <Textbox name="email" required>Email Address</Textbox>
           {!ifexistingEmail && <p className="text-red-500 text-sm">Email not found</p>}
         </div>
 
         <div className="">
           {/* <h2>password</h2> */}
-          <Textbox name="password" type="password" required>password</Textbox>
+          <Textbox name="password" type="password" required>Password</Textbox>
           {!ifcorrectPass && <p className="text-red-500 text-sm">Incorrect Password</p>}
         </div>
 
-        <div className="flex flex-row items-center gap-2">
-          <label>
+        <div >
+          <label className="flex items-center gap-2">
             <input
               type="checkbox"
               className="h-4 w-4 accent-green-800"
               name="stay"
             />
-            <span className="text-sm"> stay logged in?</span>
+            <span className="text-sm"> Stay Logged In?</span>
           </label>
         </div>
 
