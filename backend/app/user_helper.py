@@ -6,7 +6,14 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pwdlib import PasswordHash
 from sqlalchemy.sql.functions import user
-from app.model import Role, TokenData, UserCredInDB
+from app.model import (
+    LandlordSignup,
+    RealtorSignup,
+    Role,
+    StudentSignup,
+    TokenData,
+    UserCredInDB,
+)
 
 
 from fastapi import Depends, HTTPException, status
@@ -111,3 +118,40 @@ async def get_token_data(
         raise credentials_exception
 
     return TokenData(sub=int(user_id), role=role)
+
+
+def _create_student(conn, user_id: int, data: StudentSignup) -> None:
+    conn.execute(
+        sqlalchemy.text("""
+            INSERT INTO students (user_id, grad_year, campus, edu_email_verified)
+            VALUES (:user_id, :grad_year, :campus, FALSE)
+        """),
+        {"user_id": user_id, "grad_year": data.grad_year, "campus": data.campus_id},
+    )
+
+
+def _create_realtor(conn, user_id: int, data: RealtorSignup) -> None:
+    conn.execute(
+        sqlalchemy.text("""
+            INSERT INTO realtors (user_id, license_num, verified, license_state, bio, office_location)
+            VALUES (:user_id, :license_num, FALSE, :license_state, :bio, :office_location)
+        """),
+        {
+            "user_id": user_id,
+            "license_num": data.license_num,
+            "license_state": data.license_state,
+            "bio": data.bio,
+            "office_location": data.office_location,
+        },
+    )
+
+
+def _create_landlord(conn, user_id: int, data: LandlordSignup) -> None:
+    pass  # no profile table yet
+
+
+PROFILE_CREATORS = {
+    Role.STUDENT: _create_student,
+    Role.REALTOR: _create_realtor,
+    Role.LANDLORD: _create_landlord,
+}

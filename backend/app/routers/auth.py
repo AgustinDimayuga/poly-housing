@@ -36,6 +36,7 @@ def create_user(user: NewUser):
                 """),
                 {"user_id": user_id, "password": hashed_password},
             )
+            PROFILE_CREATORS[user.role](connection, user_id, user)
     except IntegrityError:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from enum import StrEnum
+from typing import Annotated, Literal, Union
 
 
 class Role(StrEnum):
@@ -26,14 +27,6 @@ class LoginCreds(BaseModel):
     password: str
 
 
-#
-class NewUser(BaseModel):
-    name: str
-    email: str
-    password: str
-    role: Role
-
-
 class User(BaseModel):
     id: int
     name: str
@@ -44,3 +37,37 @@ class User(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+# add support for roles
+# from typing import Annotated, Literal, Union
+
+
+class BaseSignup(BaseModel):
+    name: str
+    email: str
+    password: str
+
+
+class StudentSignup(BaseSignup):
+    role: Literal[Role.STUDENT]
+    grad_year: int
+    campus_id: int
+
+
+class RealtorSignup(BaseSignup):
+    role: Literal[Role.REALTOR]
+    license_num: str
+    license_state: str
+    bio: str | None = None
+    office_location: str | None = None
+
+
+class LandlordSignup(BaseSignup):
+    role: Literal[Role.LANDLORD]
+
+
+NewUser = Annotated[
+    Union[StudentSignup, RealtorSignup, LandlordSignup],
+    Field(discriminator="role"),
+]
