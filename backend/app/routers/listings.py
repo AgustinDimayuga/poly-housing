@@ -3,6 +3,7 @@ from fastapi import APIRouter, status, HTTPException
 from pydantic import BaseModel, Field
 import sqlalchemy
 from app import db
+from sqlalchemy import JSON
 
 router = APIRouter(prefix="/listings", tags=["listings"])
 
@@ -22,7 +23,7 @@ class Listing(BaseModel):
     status: str
     address: str
     description: str
-    amenities: str
+    amenities: list[str]
 
 
 class NewListing(BaseModel):
@@ -39,7 +40,7 @@ class NewListing(BaseModel):
     status: str
     address: str
     description: str
-    amenities: str
+    amenities: list[str]
 
 
 # class NewListing(BaseModel):
@@ -72,25 +73,40 @@ def create_listing(listing: NewListing):
                     VALUES (:poster_id, :campus, :city, :type, :bedroom, :bathroom, :square_ft,
                     :price_monthly, :available_from, :available_to, :status, :address, :description, :amenities)
                     RETURNING id
-                """),
-            [
-                {
-                    "poster_id": listing.posterId,
-                    "campus": campus,
-                    "city": listing,
-                    "type": listing.type,
-                    "bedroom": listing.bedroom,
-                    "bathroom": listing.bathroom,
-                    "square_ft": listing.square_ft,
-                    "price_monthly": listing.monthly_price,
-                    "available_from": listing.available_from,
-                    "available_to": listing.available_to,
-                    "status": listing.status,
-                    "address": listing.address,
-                    "description": listing.description,
-                    "amenities": listing.amenities,
-                }
-            ],
+                """).bindparams(sqlalchemy.bindparam("amenities", type_=JSON)),
+            {
+                "poster_id": listing.posterId,
+                "campus": campus,
+                "city": listing.city,
+                "type": listing.type,
+                "bedroom": listing.bedroom,
+                "bathroom": listing.bathroom,
+                "square_ft": listing.square_ft,
+                "price_monthly": listing.monthly_price,
+                "available_from": listing.available_from,
+                "available_to": listing.available_to,
+                "status": listing.status,
+                "address": listing.address,
+                "description": listing.description,
+                "amenities": listing.amenities,
+            },
+        ).scalar_one_or_none()
+        return Listing(
+            id=listing_id,
+            posterId=listing.posterId,
+            campus=listing.campus,
+            city=listing.city,
+            type=listing.type,
+            bedroom=listing.bedroom,
+            bathroom=listing.bathroom,
+            square_ft=listing.square_ft,
+            monthly_price=listing.monthly_price,
+            available_from=listing.available_from,
+            available_to=listing.available_to,
+            status=listing.status,
+            address=listing.address,
+            description=listing.description,
+            amenities=listing.amenities,
         )
 
 
