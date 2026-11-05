@@ -5,6 +5,7 @@ import sqlalchemy
 from app import db
 from sqlalchemy import JSON
 
+# from datetime import date (Talk to team about this)
 router = APIRouter(prefix="/listings", tags=["listings"])
 
 
@@ -120,6 +121,43 @@ def create_listing(listing: NewListing):
         )
 
 
+@router.get("/all", response_model=list[Listing])
+def get_listings():
+    with db.engine.begin() as connection:
+        listings = (
+            connection.execute(
+                sqlalchemy.text("""
+                SELECT listing.*, campus.campus
+                FROM listing
+                JOIN Campus ON campus.id = listing.campus
+                """)
+            )
+            .mappings()
+            .all()
+        )
+
+        return [
+            Listing(
+                id=listing["id"],
+                posterId=listing["poster_id"],
+                campus=listing["campus"],
+                city=listing["city"],
+                type=listing["type"],
+                bedroom=listing["bedroom"],
+                bathroom=listing["bathroom"],
+                square_ft=listing["square_ft"],
+                monthly_price=listing["price_monthly"],
+                available_from=listing["available_from"],
+                available_to=listing["available_to"],
+                status=listing["status"],
+                address=listing["address"],
+                description=listing["description"],
+                amenities=listing["amenities"],
+            )
+            for listing in listings
+        ]
+
+
 @router.get("/{listing_id}", response_model=Listing)
 def get_listing(listing_id: int):
     with db.engine.begin() as connection:
@@ -128,36 +166,6 @@ def get_listing(listing_id: int):
                 SELECT *
                 from listing
                 WHERE id = :listing_id
-                """),
-            [{"listing_id": listing_id}],
-        ).one()
-
-        return Listing(
-            id=listing.id,
-            posterId=listing.poster_id,
-            campus=listing.campus,
-            city=listing.city,
-            type=listing.type,
-            bedroom=listing.bedroom,
-            bathroom=listing.bathroom,
-            square_ft=listing.square_ft,
-            monthly_price=listing.price_monthly,
-            available_from=listing.available_from,
-            available_to=listing.available_to,
-            status=listing.status,
-            address=listing.address,
-            description=listing.description,
-            amenities=listing.amenities,
-        )
-
-
-@router.get("/listings", response_model=Listing)
-def get_listings(listing_id: int):
-    with db.engine.begin() as connection:
-        listing = connection.execute(
-            sqlalchemy.text("""
-                SELECT *
-                from listing
                 """),
             [{"listing_id": listing_id}],
         ).one()
