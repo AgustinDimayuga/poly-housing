@@ -30,16 +30,31 @@ class NewListing(BaseModel):
     address: str
 
 
+""" Should we lowercase the campus names to avoid databse query errors?"""
+
+
 @router.post("/", response_model=Listing)
 def create_listing(listing: NewListing):
     with db.engine.begin() as connection:
+        campus_id = connection.execute(
+            sqlalchemy.text("""
+                SELECT id 
+                FROM campus
+                WHERE name = campus.name
+                """),
+            [{"name": listing.campus}],
+        )
+
+        if not campus_id:
+            raise HTTPException(status_code=404, detail="Campus not found in database")
+
         listing_id = connection.execute(
             sqlalchemy.text("""
                     INSERT INTO listing (poster_id, campus, city, type, bedroom, bathroom, square_ft,
                     price_monthly, available_from, available_to, status, address, description, amenities)
-                    VALUES hello
+                    VALUES 
                 """),
-            [{"poster_id": listing.userId}],
+            [{"poster_id": listing.userId, "campus": campus_id}],
         )
 
 
