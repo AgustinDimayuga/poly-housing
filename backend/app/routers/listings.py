@@ -53,6 +53,16 @@ class NewListing(BaseModel):
 
 @router.post("/", response_model=Listing)
 def create_listing(listing: NewListing):
+
+    if listing.bedroom < 0:
+        raise HTTPException(status_code=404, detail="invalid bedroom number")
+    if listing.bathroom < 0:
+        raise HTTPException(status_code=404, detail="invalid bathroom number")
+    if listing.square_ft < 0:
+        raise HTTPException(status_code=404, detail="invalid square footage")
+    if listing.monthly_price < 0:
+        raise HTTPException(status_code=404, detail="invalid monthly price")
+
     with db.engine.begin() as connection:
         campus = connection.execute(
             sqlalchemy.text("""
@@ -122,4 +132,50 @@ def get_listing(listing_id: int):
             [{"listing_id": listing_id}],
         ).one()
 
-        return Listing(id=listing.id)
+        return Listing(
+            id=listing.id,
+            posterId=listing.poster_id,
+            campus=listing.campus,
+            city=listing.city,
+            type=listing.type,
+            bedroom=listing.bedroom,
+            bathroom=listing.bathroom,
+            square_ft=listing.square_ft,
+            monthly_price=listing.price_monthly,
+            available_from=listing.available_from,
+            available_to=listing.available_to,
+            status=listing.status,
+            address=listing.address,
+            description=listing.description,
+            amenities=listing.amenities,
+        )
+
+
+@router.get("/listings", response_model=Listing)
+def get_listings(listing_id: int):
+    with db.engine.begin() as connection:
+        listing = connection.execute(
+            sqlalchemy.text("""
+                SELECT *
+                from listing
+                """),
+            [{"listing_id": listing_id}],
+        ).one()
+
+        return Listing(
+            id=listing.id,
+            posterId=listing.poster_id,
+            campus=listing.campus,
+            city=listing.city,
+            type=listing.type,
+            bedroom=listing.bedroom,
+            bathroom=listing.bathroom,
+            square_ft=listing.square_ft,
+            monthly_price=listing.price_monthly,
+            available_from=listing.available_from,
+            available_to=listing.available_to,
+            status=listing.status,
+            address=listing.address,
+            description=listing.description,
+            amenities=listing.amenities,
+        )
