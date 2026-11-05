@@ -69,9 +69,28 @@ def create_listing(listing: NewListing):
             sqlalchemy.text("""
                     INSERT INTO listing (poster_id, campus, city, type, bedroom, bathroom, square_ft,
                     price_monthly, available_from, available_to, status, address, description, amenities)
-                    VALUES
+                    VALUES (:poster_id, :campus, :city, :type, :bedroom, :bathroom, :square_ft,
+                    :price_monthly, :available_from, :available_to, :status, :address, :description, :amenities)
+                    RETURNING id
                 """),
-            [{"poster_id": listing.posterId, "campus": campus, "city": listing}],
+            [
+                {
+                    "poster_id": listing.posterId,
+                    "campus": campus,
+                    "city": listing,
+                    "type": listing.type,
+                    "bedroom": listing.bedroom,
+                    "bathroom": listing.bathroom,
+                    "square_ft": listing.square_ft,
+                    "price_monthly": listing.monthly_price,
+                    "available_from": listing.available_from,
+                    "available_to": listing.available_to,
+                    "status": listing.status,
+                    "address": listing.address,
+                    "description": listing.description,
+                    "amenities": listing.amenities,
+                }
+            ],
         )
 
 
