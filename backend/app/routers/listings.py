@@ -26,8 +26,25 @@ class Listing(BaseModel):
 
 
 class NewListing(BaseModel):
-    userId: int
+    posterId: int
+    campus: str
+    city: str
+    type: str
+    bedroom: int
+    bathroom: int
+    square_ft: int
+    monthly_price: int
+    available_from: str
+    available_to: str
+    status: str
     address: str
+    description: str
+    amenities: str
+
+
+# class NewListing(BaseModel):
+#     userId: int
+#     address: str
 
 
 """ Should we lowercase the campus names to avoid databse query errors?"""
