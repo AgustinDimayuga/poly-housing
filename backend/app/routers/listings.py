@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 import sqlalchemy
 from app import db
 
-router = APIRouter(prefix="listings", tags=["listings"])
+router = APIRouter(prefix="/listings", tags=["listings"])
 
 
 class Listing(BaseModel):
@@ -53,25 +53,25 @@ class NewListing(BaseModel):
 @router.post("/", response_model=Listing)
 def create_listing(listing: NewListing):
     with db.engine.begin() as connection:
-        campus_id = connection.execute(
+        campus = connection.execute(
             sqlalchemy.text("""
-                SELECT id 
+                SELECT id
                 FROM campus
-                WHERE name = campus.name
+                WHERE campus.campus = :name
                 """),
-            [{"name": listing.campus}],
-        )
+            {"name": listing.campus},
+        ).scalar_one_or_none()
 
-        if not campus_id:
+        if campus is None:
             raise HTTPException(status_code=404, detail="Campus not found in database")
 
         listing_id = connection.execute(
             sqlalchemy.text("""
                     INSERT INTO listing (poster_id, campus, city, type, bedroom, bathroom, square_ft,
                     price_monthly, available_from, available_to, status, address, description, amenities)
-                    VALUES 
+                    VALUES
                 """),
-            [{"poster_id": listing.userId, "campus": campus_id}],
+            [{"poster_id": listing.posterId, "campus": campus, "city": listing}],
         )
 
 
