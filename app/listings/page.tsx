@@ -3,8 +3,9 @@ import { homes } from "../components/browse-listings/data";
 import Footer from "../components/browse-listings/footer";
 import Icon from "../components/browse-listings/icon";
 import ListingCard from "../components/browse-listings/listing-card";
-import Preferences from "../components/browse-listings/preferences";
 import SearchBar from "../components/browse-listings/search-bar";
+import Preferences from "../components/browse-listings/preferences";
+import { requireUser } from "../shared/auth";
 
 export const metadata: Metadata = {
   title: "Find housing in SLO | PolyHousing",
@@ -12,7 +13,8 @@ export const metadata: Metadata = {
     "Explore student-friendly homes, apartments, and studios near Cal Poly in San Luis Obispo."
 };
 
-export default function BrowseListingsPage() {
+export default async function BrowseListingsPage() {
+  const user = await requireUser(); // logged-out users get sent to /login
   return (
     <div className="min-h-screen bg-poly-green-light text-signup-title-green [font-family:Arial,Helvetica,sans-serif]">
       <main className="mx-auto  px-5 pt-10 pb-10 sm:px-8 lg:px-10">

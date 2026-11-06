@@ -1,74 +1,50 @@
-'use client'
+"use client";
 
 import Textbox from "../components/text";
 import Button from "../components/button";
 import Link from "next/link";
-import React, { SubmitEvent } from "react";
-import { redirect } from "next/navigation";
+import { useActionState } from "react";
+import { login } from "./actions";
 
 export default function LoginPage() {
-
-  const [ifcorrectPass, setPassState] = React.useState(true)
-
-  async function loginUser(event: SubmitEvent<HTMLFormElement>){
-    event.preventDefault()
-
-    const formData = new FormData(event.currentTarget);
-
-    const email = formData.get("email")
-    const password = formData.get("password")
-
-    //send password and check if they are matching on the server
-
-    const userCreds = {
-      email: email,
-      password: password
-    }
-
-    const response = await fetch('http://127.0.0.1:8000/users/auth', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(userCreds)
-    })
-
-    if(response.status === 200){
-      redirect("/Listings");
-    }
-    else if (response.status === 401){
-      setPassState(false);
-      return
-    }
-  }
-
+  const [state, formAction, isPending] = useActionState(
+    login,
+    {}
+  );
 
   return (
     <div className="flex justify-center-safe bg-poly-green-light min-h-screen min-w-screen">
-
-       <form className="flex flex-col mt-20 gap-5 w-120" onSubmit={loginUser}>
-
+      <form
+        className="flex flex-col mt-20 gap-5 w-120"
+        action={formAction}>
         <h1 className="text-4xl font-inter font-bold">
           Login to PolyHousing
         </h1>
 
         <p className="mt-5">
           new here?{" "}
-          <Link href="./" className="text-under-input hover:underline">
+          <Link
+            href="./"
+            className="text-under-input hover:underline">
             create an account -&gt;
           </Link>
         </p>
 
         <div className="">
-          {/* <h2>email address</h2> */}
-          <Textbox name="email" required>email address</Textbox>
+          <Textbox
+            name="email"
+            defaultValue={state.email}
+            required>
+            email address
+          </Textbox>
         </div>
 
         <div className="">
-          {/* <h2>password</h2> */}
-          <Textbox name="password" type="password" required>password</Textbox>
-          {!ifcorrectPass && <p className="text-red-500 text-sm">Incorrect Password</p>}
+          <Textbox name="password" type="password" required>
+            password
+          </Textbox>
         </div>
+        <span className="text-red-600">{state.error}</span>
 
         <div className="flex flex-row items-center gap-2">
           <label>
@@ -85,16 +61,13 @@ export default function LoginPage() {
           <Button
             variant="primary"
             aria-label="Log in"
-            className="w-full"
+            className="w-full disabled:bg-gray-900"
+            disabled={isPending}
             type="submit">
             log in
           </Button>
         </div>
-
-        </form>
-
-      {/* </div> */}
-
+      </form>
     </div>
   );
 }
