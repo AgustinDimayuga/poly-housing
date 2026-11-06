@@ -57,11 +57,11 @@ class NewListing(BaseModel):
 @router.post("/", response_model=Listing)
 def create_listing(listing: NewListing):
 
-    if listing.bedroom < 0:
+    if listing.bedroom <= 0:
         raise HTTPException(status_code=404, detail="invalid bedroom number")
-    if listing.bathroom < 0:
+    if listing.bathroom <= 0:
         raise HTTPException(status_code=404, detail="invalid bathroom number")
-    if listing.square_ft < 0:
+    if listing.square_ft <= 0:
         raise HTTPException(status_code=404, detail="invalid square footage")
     if listing.monthly_price < 0:
         raise HTTPException(status_code=404, detail="invalid monthly price")
@@ -75,6 +75,20 @@ def create_listing(listing: NewListing):
                 """),
             {"name": listing.campus},
         ).scalar_one_or_none()
+
+        poster_id = connection.execute(
+            sqlalchemy.text("""
+                SELECT id
+                FROM users 
+                where user.id = :poster_id
+                """),
+            {"poster_id": listing.posterId},
+        ).scalar_one_or_none()
+
+        if poster_id is None:
+            raise HTTPException(
+                status_code=404, detail="Poster ID not found in database"
+            )
 
         if campus is None:
             raise HTTPException(status_code=404, detail="Campus not found in database")
