@@ -79,8 +79,8 @@ def create_listing(listing: NewListing):
         poster_id = connection.execute(
             sqlalchemy.text("""
                 SELECT id
-                FROM users 
-                where user.id = :poster_id
+                FROM users
+                where users.id = :poster_id
                 """),
             {"poster_id": listing.posterId},
         ).scalar_one_or_none()
@@ -205,35 +205,44 @@ def get_listing(listing_id: int):
         )
 
 
+## quick revision will be needed to make sure it does'nt delete multiple rows when db heavily populated
+
+
 @router.delete("/{listing_id}", response_model=Listing)
 def delete_listing(listing_id: int):
     with db.engine.begin() as connection:
         listing = connection.execute(
             sqlalchemy.text(
-                """"DELETE FROM listing WHERE id = :listing_id RETURNING *"""
+                """
+                DELETE FROM listing
+                USING campus
+                WHERE listing.id = :listing_id AND campus.id = listing.campus
+                RETURNING * , campus.campus AS campus_name
+                """
             ),
-            [{"listing_id": listing_id}],
-        ).scalar_one_or_none()
+            {"listing_id": listing_id},
+        ).one_or_none()
 
         if listing is None:
             raise HTTPException(
                 status_code=404, detail="Listing was not found in database"
             )
 
-            return Listing(
-                id=listing.id,
-                posterId=listing.poster_id,
-                campus=listing.campus,
-                city=listing.city,
-                type=listing.type,
-                bedroom=listing.bedroom,
-                bathroom=listing.bathroom,
-                square_ft=listing.square_ft,
-                monthly_price=listing.price_monthly,
-                available_from=listing.available_from,
-                available_to=listing.available_to,
-                status=listing.status,
-                address=listing.address,
-                description=listing.description,
-                amenities=listing.amenities,
-            )
+        print(listing)
+        return Listing(
+            id=listing.id,
+            posterId=listing.poster_id,
+            campus=listing.campus_name,
+            city=listing.city,
+            type=listing.type,
+            bedroom=listing.bedroom,
+            bathroom=listing.bathroom,
+            square_ft=listing.square_ft,
+            monthly_price=listing.price_monthly,
+            available_from=listing.available_from,
+            available_to=listing.available_to,
+            status=listing.status,
+            address=listing.address,
+            description=listing.description,
+            amenities=listing.amenities,
+        )
