@@ -65,6 +65,8 @@ def create_listing(listing: NewListing):
         raise HTTPException(status_code=404, detail="invalid square footage")
     if listing.monthly_price < 0:
         raise HTTPException(status_code=404, detail="invalid monthly price")
+    if listing.available_from <= listing.available_to:
+        raise HTTPException(status_code=404, detail="invalid date range for listing")
 
     with db.engine.begin() as connection:
         campus = connection.execute(
