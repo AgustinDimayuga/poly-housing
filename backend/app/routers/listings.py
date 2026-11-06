@@ -5,6 +5,8 @@ import sqlalchemy
 from app import db
 from sqlalchemy import JSON
 
+from datetime import date
+
 # from datetime import date (Talk to team about this)
 router = APIRouter(prefix="/listings", tags=["listings"])
 
@@ -19,8 +21,8 @@ class Listing(BaseModel):
     bathroom: int
     square_ft: int
     monthly_price: int
-    available_from: str
-    available_to: str
+    available_from: date
+    available_to: date
     status: str
     address: str
     description: str
@@ -36,8 +38,8 @@ class NewListing(BaseModel):
     bathroom: int
     square_ft: int
     monthly_price: int
-    available_from: str
-    available_to: str
+    available_from: date
+    available_to: date
     status: str
     address: str
     description: str
