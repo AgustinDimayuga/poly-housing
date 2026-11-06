@@ -12,24 +12,7 @@ router = APIRouter(prefix="/listings", tags=["listings"])
 
 
 class Listing(BaseModel):
-    id: int
-    posterId: int
-    campus: str
-    city: str
-    type: str
-    bedroom: int
-    bathroom: int
-    square_ft: int
-    monthly_price: int
-    available_from: date
-    available_to: date
-    status: str
-    address: str
-    description: str
-    amenities: list[str]
-
-
-class NewListing(BaseModel):
+    id: int | None = None
     posterId: int
     campus: str
     city: str
@@ -47,6 +30,23 @@ class NewListing(BaseModel):
 
 
 # class NewListing(BaseModel):
+#     posterId: int
+#     campus: str
+#     city: str
+#     type: str
+#     bedroom: int
+#     bathroom: int
+#     square_ft: int
+#     monthly_price: int
+#     available_from: date
+#     available_to: date
+#     status: str
+#     address: str
+#     description: str
+#     amenities: list[str]
+
+
+# class NewListing(BaseModel):
 #     userId: int
 #     address: str
 
@@ -55,7 +55,7 @@ class NewListing(BaseModel):
 
 
 @router.post("/", response_model=Listing)
-def create_listing(listing: NewListing):
+def create_listing(listing: Listing):
 
     if listing.bedroom <= 0:
         raise HTTPException(status_code=404, detail="invalid bedroom number")
@@ -186,7 +186,12 @@ def get_listing(listing_id: int):
                 WHERE id = :listing_id
                 """),
             [{"listing_id": listing_id}],
-        ).one()
+        ).one_or_none()
+
+        if listing is None:
+            raise HTTPException(
+                status_code=404, detail="Listing was not found in the Database"
+            )
 
         return Listing(
             id=listing.id,
