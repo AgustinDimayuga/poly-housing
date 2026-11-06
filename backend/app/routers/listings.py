@@ -1,11 +1,12 @@
-from sqlalchemy.exc import IntegrityError
-from fastapi import APIRouter, status, HTTPException
-from pydantic import BaseModel, Field
-import sqlalchemy
-from app import db
-from sqlalchemy import JSON
-
 from datetime import date
+
+import sqlalchemy
+from fastapi import APIRouter, HTTPException, status
+from pydantic import BaseModel, Field
+from sqlalchemy import JSON
+from sqlalchemy.exc import IntegrityError
+
+from app import db
 
 # from datetime import date (Talk to team about this)
 router = APIRouter(prefix="/listings", tags=["listings"])
@@ -58,15 +59,15 @@ class Listing(BaseModel):
 def create_listing(listing: Listing):
 
     if listing.bedroom <= 0:
-        raise HTTPException(status_code=404, detail="invalid bedroom number")
+        raise HTTPException(status_code=401, detail="invalid bedroom number")
     if listing.bathroom <= 0:
-        raise HTTPException(status_code=404, detail="invalid bathroom number")
+        raise HTTPException(status_code=401, detail="invalid bathroom number")
     if listing.square_ft <= 0:
-        raise HTTPException(status_code=404, detail="invalid square footage")
+        raise HTTPException(status_code=401, detail="invalid square footage")
     if listing.monthly_price < 0:
-        raise HTTPException(status_code=404, detail="invalid monthly price")
+        raise HTTPException(status_code=401, detail="invalid monthly price")
     if listing.available_from <= listing.available_to:
-        raise HTTPException(status_code=404, detail="invalid date range for listing")
+        raise HTTPException(status_code=401, detail="invalid date range for listing")
 
     with db.engine.begin() as connection:
         campus = connection.execute(
@@ -77,6 +78,9 @@ def create_listing(listing: Listing):
                 """),
             {"name": listing.campus},
         ).scalar_one_or_none()
+
+        if campus is None:
+            raise HTTPException(status_code=404, detail="Campus not found in database")
 
         poster_id = connection.execute(
             sqlalchemy.text("""
@@ -91,9 +95,6 @@ def create_listing(listing: Listing):
             raise HTTPException(
                 status_code=404, detail="Poster ID not found in database"
             )
-
-        if campus is None:
-            raise HTTPException(status_code=404, detail="Campus not found in database")
 
         listing_id = connection.execute(
             sqlalchemy.text("""
