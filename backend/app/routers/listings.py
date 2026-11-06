@@ -203,3 +203,37 @@ def get_listing(listing_id: int):
             description=listing.description,
             amenities=listing.amenities,
         )
+
+
+@router.delete("/{listing_id}", response_model=Listing)
+def delete_listing(listing_id: int):
+    with db.engine.begin() as connection:
+        listing = connection.execute(
+            sqlalchemy.text(
+                """"DELETE FROM listing WHERE id = :listing_id RETURNING *"""
+            ),
+            [{"listing_id": listing_id}],
+        ).scalar_one_or_none()
+
+        if listing is None:
+            raise HTTPException(
+                status_code=404, detail="Listing was not found in database"
+            )
+
+            return Listing(
+                id=listing.id,
+                posterId=listing.poster_id,
+                campus=listing.campus,
+                city=listing.city,
+                type=listing.type,
+                bedroom=listing.bedroom,
+                bathroom=listing.bathroom,
+                square_ft=listing.square_ft,
+                monthly_price=listing.price_monthly,
+                available_from=listing.available_from,
+                available_to=listing.available_to,
+                status=listing.status,
+                address=listing.address,
+                description=listing.description,
+                amenities=listing.amenities,
+            )
