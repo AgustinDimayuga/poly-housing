@@ -3,8 +3,8 @@ import Link from "next/link";
 import Icon from "./icon";
 import { dateLabel, number, type Home } from "./data";
 
-import {Apilisting} from "../../listings/listings"
-import {formatPrice, fromDate} from "../../listings/format"
+import type { ApiListing as Apilisting } from "../../listings/listings";
+import { formatPrice, formatDate } from "../../listings/format";
 
 
 // still needs picture to be inserted
@@ -21,7 +21,7 @@ export default function ListingCard({listing}: {listing: Apilisting}) {
             {listing.bedrooms} beds · {listing.bathrooms} baths · {listing.square_ft} sq ft
           </p>
           <p> {listing.address}</p>
-          <p>Available from: {fromDate(listing.available_from)}</p>
+          <p>Available from: {formatDate(listing.available_from)}</p>
 
         </div>
       </div>
