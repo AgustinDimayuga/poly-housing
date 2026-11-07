@@ -41,28 +41,6 @@ class Update_listing(BaseModel):
     amenities: list[str]
 
 
-# class NewListing(BaseModel):
-#     posterId: int
-#     campus: str
-#     city: str
-#     type: str
-#     bedroom: int
-#     bathroom: int
-#     square_ft: int
-#     monthly_price: int
-#     available_from: date
-#     available_to: date
-#     status: str
-#     address: str
-#     description: str
-#     amenities: list[str]
-
-
-# class NewListing(BaseModel):
-#     userId: int
-#     address: str
-
-
 """ Should we lowercase the campus names to avoid databse query errors?"""
 
 
@@ -267,32 +245,56 @@ def delete_listing(listing_id: int):
         )
 
 
-@router.post("/{update}")
-def update_listing(Listing: Update_listing):
+class successfull_mess(BaseModel):
+    message: str
+
+
+@router.post("/{update}", response_model=successfull_mess)
+def update_listing(listing: Update_listing):
+
+    if listing.monthly_price < 0:
+        raise HTTPException(status_code=401, detail="Monthly Price Cannot be Negative")
     with db.engine.begin() as connection:
+        id = connection.execute(
+            sqlalchemy.text(
+                """
+                SELECT *
+                FROM listing
+                WHERE id = :listing_id
+                """
+            ),
+            {"listing_id": listing.id},
+        ).one_or_none()
+
+        if id is None:
+            raise HTTPException(
+                status_code=401, detail="Listing could not be found in the database"
+            )
         connection.execute(
             sqlalchemy.text(
                 """
-                UPDATE type price_monthly available_from available_to status description amenities
+                UPDATE listing
                 SET type = :type ,
-                price_monthly =: price_monthly,
-                availabe_from = :availabe_from,
+                price_monthly = :price_monthly,
+                available_from = :available_from,
                 available_to = :available_to,
-                status =:status,
-                description =:description,
-                amenities =: amenities
-                WHERE listing_id = :listing_id
+                status = :status,
+                description = :description,
+                amenities = :amenities
+                WHERE listing.id = :listing_id
+                RETURNING *
 
                 """
-            ),
+            ).bindparams(sqlalchemy.bindparam("amenities", type_=JSON)),
             {
-                "listing_id": Listing.id,
-                "type": Listing.type,
-                "price_monthly": Listing.monthly_price,
-                "available_from": Listing.available_from,
-                "available_to": Listing.available_to,
-                "status": Listing.status,
-                "description": Listing.description,
-                "amenities": Listing.amenities,
+                "listing_id": listing.id,
+                "type": listing.type,
+                "price_monthly": listing.monthly_price,
+                "available_from": listing.available_from,
+                "available_to": listing.available_to,
+                "status": listing.status,
+                "description": listing.description,
+                "amenities": listing.amenities,
             },
         )
+        return successfull_mess(message="Listing Successfully Updated")
