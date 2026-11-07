@@ -9,14 +9,13 @@ import { requireUser } from "../shared/auth";
 
 import {getListings} from "../listings/listings"
 
-const user = await requireUser(); // logged-out users get sent to /login
-const listings = await getListings(); // fetch all listings from the API
-const total = listings.length; // get the total number of listings
-const visible = listings.slice(0,6); // get the first 6 listings to display
 
 
 export default async function BrowseListingsPage() {
   const user = await requireUser(); // logged-out users get sent to /login
+  const listings = await getListings(); // fetch all listings from the API
+  const total = listings.length; // get the total number of listings
+  const visible = listings.slice(0,6); // get the first 6 listings to display
 
   return (
     <div className="min-h-screen bg-poly-green-light text-signup-title-green [font-family:Arial,Helvetica,sans-serif]">
@@ -41,7 +40,7 @@ export default async function BrowseListingsPage() {
 
          {/* and of the title and search bar */}
 
-         
+
         <div className="mt-6 grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
           <Preferences />
           <section
