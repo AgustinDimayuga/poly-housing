@@ -30,6 +30,17 @@ class Listing(BaseModel):
     amenities: list[str]
 
 
+class Update_listing(BaseModel):
+    id: int
+    type: str
+    monthly_price: int
+    available_from: date
+    available_to: date
+    status: str
+    description: str
+    amenities: list[str]
+
+
 # class NewListing(BaseModel):
 #     posterId: int
 #     campus: str
@@ -253,4 +264,35 @@ def delete_listing(listing_id: int):
             address=listing.address,
             description=listing.description,
             amenities=listing.amenities,
+        )
+
+
+@router.post("/{update}")
+def update_listing(Listing: Update_listing):
+    with db.engine.begin() as connection:
+        connection.execute(
+            sqlalchemy.text(
+                """
+                UPDATE type price_monthly available_from available_to status description amenities
+                SET type = :type ,
+                price_monthly =: price_monthly,
+                availabe_from = :availabe_from,
+                available_to = :available_to,
+                status =:status,
+                description =:description,
+                amenities =: amenities
+                WHERE listing_id = :listing_id
+
+                """
+            ),
+            {
+                "listing_id": Listing.id,
+                "type": Listing.type,
+                "price_monthly": Listing.monthly_price,
+                "available_from": Listing.available_from,
+                "available_to": Listing.available_to,
+                "status": Listing.status,
+                "description": Listing.description,
+                "amenities": Listing.amenities,
+            },
         )
