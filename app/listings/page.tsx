@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+
 //import { homes } from "../components/browse-listings/data";
 import Footer from "../components/browse-listings/footer";
 import Icon from "../components/browse-listings/icon";

@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 import sqlalchemy
 from fastapi import APIRouter, HTTPException, status
@@ -129,6 +129,7 @@ def create_listing(listing: Listing):
         )
 
 
+## Pagination Needs to be added to this endpoint to avoid it from crashing or slow queries
 @router.get("/all", response_model=list[Listing])
 def get_listings():
     with db.engine.begin() as connection:
@@ -298,3 +299,79 @@ def update_listing(listing: Update_listing):
             },
         )
         return successfull_mess(message="Listing Successfully Updated")
+
+
+# neeed to discuss how months will be handled to fiz query1
+@router.get("/filter", response_model=list[Listing])
+def search_listings(
+    min_price: int | None = None,
+    max_price: int | None = None,
+    bedrooms: int | None = None,
+    bathrooms: int | None = None,
+    type: str | None = None,
+    pets: bool | None = None,
+    move_in: date | None = None,
+    # lease_months: int | None = None
+):
+    conditions = []
+    query_params = {}
+    if min_price is not None:
+        conditions.append("listing.price_monthly >= :min_price")
+        query_params["min_price"] = min_price
+
+    if max_price is not None:
+        conditions.append("listing.price_monthly <= :max_price")
+        query_params["max_price"] = max_price
+    if bedrooms is not None:
+        conditions.append("listing.bedroom = :bedrooms")
+        query_params["bedrooms"] = bedrooms
+    if bathrooms is not None:
+        conditions.append("listing.bathroom = :bathrooms")
+        query_params["bathrooms"] = bathrooms
+    if type is not None:
+        conditions.append("listing.type = :type")
+        query_params["type"] = type
+    if pets is not None:
+        conditions.append("listing.amenities->>'pets' = :pets")
+        query_params["pets"] = str(pets).lower()
+    if move_in is not None:
+        conditions.append("listing.available_from <= :move_in")
+        query_params["move_in"] = move_in
+    # if lease_months is not None:
+    #     conditions.append("listing.available_to >= :lease_end")
+    #     lease_end = move_in + timedelta(days=30 * lease_months)
+    #     query_params["lease_end"] = lease_end
+
+    query = f"""
+        SELECT listing.*, campus.campus
+        FROM listing
+        JOIN campus ON campus.id = listing.campus
+        WHERE {" AND ".join(conditions)}
+        ORDER BY listing.price_monthly ASC
+    """
+
+    with db.engine.begin() as connection:
+        listings = (
+            connection.execute(sqlalchemy.text(query), query_params).mappings().all()
+        )
+
+        return [
+            Listing(
+                id=listing["id"],
+                posterId=listing["poster_id"],
+                campus=listing["campus"],
+                city=listing["city"],
+                type=listing["type"],
+                bedroom=listing["bedroom"],
+                bathroom=listing["bathroom"],
+                square_ft=listing["square_ft"],
+                monthly_price=listing["price_monthly"],
+                available_from=listing["available_from"],
+                available_to=listing["available_to"],
+                status=listing["status"],
+                address=listing["address"],
+                description=listing["description"],
+                amenities=listing["amenities"],
+            )
+            for listing in listings
+        ]
