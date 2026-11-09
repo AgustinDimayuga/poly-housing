@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-//import { homes } from "../components/browse-listings/data";
+
+
 import Footer from "../components/browse-listings/footer";
 import Icon from "../components/browse-listings/icon";
 import ListingCard from "../components/browse-listings/listing-card";
@@ -8,12 +8,24 @@ import Preferences from "../components/browse-listings/preferences";
 import { requireUser } from "../shared/auth";
 
 import {getListings} from "../listings/listings"
+import { filterListingsfilters } from "./navbar";
+// import { SearchParams } from "next/dist/server/request/search-params";
+
+type SearchParams = Promise<{ // NEXT.js automatically reads and parses into the page and we define it here (search it up or Ask Miguel )
+  max_price?: string;
+  bedrooms?: string;
+}>;
 
 
-
-export default async function BrowseListingsPage() {
+export default async function BrowseListingsPage({searchParams,} : { searchParams : SearchParams}) {
   const user = await requireUser(); // logged-out users get sent to /login
-  const listings = await getListings(); // fetch all listings from the API
+   const sp = await searchParams;
+
+   const listings = await filterListingsfilters({
+    maxPrice: sp.max_price ? Number(sp.max_price) : undefined,
+    bedrooms: sp.bedrooms ? Number(sp.bedrooms) : undefined,
+  }); // fetch all listings from the API
+
   const total = listings.length; // get the total number of listings
   const visible = listings.slice(0,6); // get the first 6 listings to display
 
