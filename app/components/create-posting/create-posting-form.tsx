@@ -1,6 +1,12 @@
+'use client'
+
 import Image from "next/image";
 import Button from "../button";
 import Textarea from "../textarea";
+import React from "react";
+import { SubmitEvent } from "react";
+import { redirect } from "next/navigation";
+
 import {
   Checkbox,
   Field,
@@ -9,59 +15,6 @@ import {
   SelectField
 } from "./form-fields";
 
-const values: Record<string, string> = {
-  title: "Cedar House",
-  propertyType: "House",
-  address: "1248 Cedar St",
-  city: "San Luis Obispo",
-  state: "California",
-  zip: "93405",
-  bedrooms: "3",
-  bathrooms: "2",
-  area: "1,420 sq ft",
-  description:
-    "A bright, single-story home in Anholm with a shared living room, sunny backyard and room for a dining table. Student roommates and co-signers are welcome.",
-  laundry: "yes",
-  dishwasher: "yes",
-  bikeStorage: "yes",
-  backyard: "yes",
-  parking: "yes",
-  pets: "no",
-  students: "yes",
-  available: "2027-09-01",
-  leaseLength: "12 months",
-  leaseEnd: "2028-08-31",
-  residents: "3",
-  cosigners: "yes",
-  flexible: "no",
-  requirements:
-    "Each applicant completes an application. Co-signers are welcome. Ask about a tour before submitting an application.",
-  rent: "3600",
-  deposit: "3600",
-  applicationFee: "35",
-  water: "yes",
-  trash: "yes",
-  parkingIncluded: "yes",
-  electricity: "no",
-  gas: "no",
-  internet: "no",
-  electricityEstimate: "$100–$160",
-  internetEstimate: "$50–$70",
-  insurance: "Renter’s insurance · provider varies",
-  recurring: "$0",
-  costNotes:
-    "Utility estimates are for the entire home. Electricity and gas are billed by usage. Residents arrange their own internet and renter’s insurance.",
-  role: "Property owner",
-  contactName: "Emma Kim",
-  business: "Cedar Rentals",
-  phone: "(805) 555-0142",
-  email: "emma@cedarrentals.example",
-  contactMethod: "PolyHousing message",
-  applicationDestination: "Request application by message",
-  showContact: "yes",
-  authorized: "yes",
-  guidelines: "yes"
-};
 
 type Photo = { src: string; alt: string };
 const photos: Photo[] = [
@@ -81,11 +34,11 @@ const textareaClass =
   "min-h-24 text-sm font-normal leading-relaxed outline-none focus:border-poly-green-dark focus:ring-2 focus:ring-poly-green-dark/15";
 
 function field(key: string) {
-  return { id: key, name: key, defaultValue: values[key] };
+  return { id: key, name: key };
 }
 
 function checkbox(key: string) {
-  return { name: key, defaultChecked: values[key] === "yes" };
+  return { name: key };
 }
 
 const checklist = [
@@ -98,6 +51,137 @@ const checklist = [
 ];
 
 export default function CreatePostingForm() {
+
+  const [rent, setRent] = React.useState(0);
+  const [title, setTitle] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [bedrooms, setBedrooms] = React.useState(0);
+  const [bathrooms, setBathrooms] = React.useState(0);
+  const [area, setArea] = React.useState(0);
+  const [startDate, setStartDate] = React.useState(new Date("january 1 2026"));
+
+  const [leaseLength, setLeaseLength] = React.useState("12 months")
+
+  const [ifError, setError] = React.useState("")
+
+  async function submitListing(event: SubmitEvent<HTMLFormElement>){
+    event.preventDefault();
+    //time to do a lot of grabbing
+
+    const formData = new FormData(event.currentTarget);
+
+    const rent = formData.get("rent");
+    const title = formData.get("title");
+    const address = formData.get("address");
+    const city = formData.get("city");
+    const bedrooms = formData.get("bedrooms");
+    const bathrooms = formData.get("bathrooms");
+    const area = formData.get("area")
+    const propertyType = formData.get("propertyType");
+
+    //thinking it might be redundant as we are catering to cal poly students
+    const state = formData.get("state");
+
+    const zip = formData.get("zip");
+    const description = formData.get("description");
+    // const amenities = {
+    //   "laundry": formData.get("laundry") === "on",
+    //   "dishwasher": formData.get("dishwater") === "on",
+    //   "bikeStorage": formData.get("bikeStorage") === "on",
+    //   "backyard": formData.get("backyard") === "on",
+    //   "parking": formData.get("parking") === "on",
+    //   "pets": formData.get("pets") === "on"
+    // }
+    const amenities = [
+      formData.get("laundry") === "on" ? "laundry" : null,
+      formData.get("dishwater") === "on" ? "dishwater" : null,
+      formData.get("bikeStorage") === "on" ? "bikeStorage" : null,
+      formData.get("backyard") === "on" ? "backyard" : null,
+      formData.get("parking") === "on" ? "parking" : null,
+      formData.get("pets") === "on" ? "pets" : null
+  ]
+
+    const startDate = formData.get("available");
+    const endDate = formData.get("leaseEnd");
+    const leaseLength = formData.get("leaseLength");
+    const residents = formData.get("residents");
+    const cosigners = formData.get("cosigners");
+    const flexible = formData.get("flexible");
+    const requirements = formData.get("requirements");
+    const deposit = formData.get("deposit");
+    const applicationFee = formData.get("applicationFee");
+
+
+    const utilities = {
+      "water": formData.get("water") === "on",
+      "trash": formData.get("trash") === "on",
+      "parkingIncluded": formData.get("parkingIncluded") === "on",
+      "electricity": formData.get("electricity") === "on",
+      "gas": formData.get("gas") === "on",
+      "internet": formData.get("internet") === "on"
+    }
+
+    const utilityCost = {
+      "electricity and gas": formData.get("electricityEstimate"),
+      "internet": formData.get("internetEstimate"),
+      "otherRequired": formData.get("insurance"),
+      "recurring": formData.get("recurring")
+    }
+
+    const costNotes = formData.get("costNotes");
+    const role = formData.get("role");
+    const contactName = formData.get("contactName");
+    const business = formData.get("business");
+    const phone = formData.get("phone");
+    const email = formData.get("email");
+    const contactMethod = formData.get("contactMethod");
+    const applicationDestination = formData.get("applicationDestination");
+    const showContact = formData.get("showContact");
+    const authorized = formData.get("authorized");
+    const guidelines = formData.get("guidelines");
+
+    const students = formData.get("students");
+
+    // if(students !== true
+
+    // need to update the listings table to cover more data
+    const listingData = {
+      posterId: 123,
+      campus: "why do we need this??",
+      city: city,
+      type: propertyType,
+      bedroom: bedrooms,
+      bathroom: bathrooms,
+      square_ft: area,
+      monthly_price: rent,
+      available_from: startDate,
+      available_to: endDate,
+      status: "pending idk",
+      address: address,
+      description: description,
+      amenities: amenities.map((am) => am !== null)
+    }
+
+    const response = await fetch("http://127.0.0.1:8000/listings/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(listingData)
+    })
+
+    if(response.status === 201){
+      setError("")
+      redirect("/listings")
+    } else {
+      setError("Could not create listing");
+      return
+    }
+
+  }
+
+
   function listingPreview() {
     return (
       <>
@@ -116,38 +200,41 @@ export default function CreatePostingForm() {
             Add a cover photo
           </div>
         )}
-        {values.students === "yes" && (
+        {/* {values.students === "yes" && (
           <span className="rounded-full bg-mini-labels px-2.5 py-1 text-[10px] font-semibold text-poly-green-dark">
             Student applicants welcome
           </span>
-        )}
+        )} */}
         <p className="mt-5 text-2xl font-semibold tracking-tight">
-          $3,600{" "}
+          {/* $3,600{" "} */}
+          ${rent} {" "}
           <span className="text-lg font-medium">/ month</span>
         </p>
         <h3 className="mt-5 text-base font-semibold">
-          {values.title || "Your property name"}
+          {title || "Your property name"}
         </h3>
         <p className="mt-4 text-xs leading-5 text-under-input">
-          {values.address} · {values.city}
+          {address} · {city}
         </p>
         <p className="mt-4 text-xs">
-          {values.bedrooms} beds · {values.bathrooms} baths ·{" "}
-          {values.area}
+          {bedrooms} beds · {bathrooms} baths ·{" "}
+          {area} sqr ft
         </p>
         <div className="mt-5 space-y-3 border-t border-border-inputs pt-5 text-xs text-under-input">
           <p className="text-signup-title-green">
-            Available September 1, 2027
+            {/* Available September 1, 2027 */}
+            Available {`${startDate.toLocaleString('en-US', {month : "long"})} ${startDate.toLocaleString('en-US', {day : "numeric"})}, ${startDate.getFullYear()}`}
           </p>
-          <p>
+          {/* <p>
             Water, sewer & trash{" "}
             {values.water === "yes" && values.trash === "yes"
               ? "included"
               : "billed separately"}
-          </p>
+          </p> */}
           <p>
             3 rent inclusions ·{" "}
-            {values.leaseLength.toLowerCase()} lease
+            {/* {values.leaseLength.toLowerCase()} lease */}
+            {leaseLength} lease
           </p>
         </div>
       </>
@@ -155,7 +242,9 @@ export default function CreatePostingForm() {
   }
 
   return (
-    <div className="mx-auto max-w-[1320px] px-5 pb-12 pt-10 sm:px-8 lg:px-10 lg:pt-12">
+
+    // <div className="mx-auto max-w-[1320px] px-5 pb-12 pt-10 sm:px-8 lg:px-10 lg:pt-12">
+    <form className="mx-auto max-w-[1320px] px-5 pb-12 pt-10 sm:px-8 lg:px-10 lg:pt-12" onSubmit={submitListing}>
       <div className="flex flex-wrap items-center justify-between gap-5">
         <div>
           <p className="mb-2 text-[10px] font-bold tracking-[0.12em] text-poly-green-dark">
@@ -164,8 +253,8 @@ export default function CreatePostingForm() {
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Make room for students.
           </h1>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-under-input">
-            Share the home, the timing and the full cost. All
+          <p className="mt-2 max-w-xl text-sm leading-6 text-under-input mb-2">
+            Add details about the property. All
             PolyHousing listings must accept student applicants.
           </p>
         </div>
@@ -174,20 +263,22 @@ export default function CreatePostingForm() {
         </Button>
       </div>
 
-      <div className="my-6 flex flex-wrap items-center justify-between gap-3 rounded-lg bg-mini-labels px-5 py-4 text-xs">
+      {/* Not sure you guys want to have a save draft feature implement or not */}
+
+      {/* <div className="my-6 flex flex-wrap items-center justify-between gap-3 rounded-lg bg-mini-labels px-5 py-4 text-xs">
         <div className="flex flex-wrap items-center gap-5">
           <span className="font-semibold text-poly-green-dark">
             Draft
           </span>
           <span>
-            {values.title || "Untitled listing"} · Your listing
+            {title || "Untitled listing"} · Your listing
             is not published yet.
           </span>
         </div>
         <span className="text-under-input">
           Last saved: just now
         </span>
-      </div>
+      </div> */}
 
       <div className="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_310px]">
         <div className="min-w-0 space-y-6">
@@ -196,6 +287,7 @@ export default function CreatePostingForm() {
               <Field
                 label="Listing title *"
                 {...field("title")}
+                onChange={(e) => setTitle(e.target.value)}
                 required
               />
               <SelectField
@@ -217,6 +309,7 @@ export default function CreatePostingForm() {
               label="Street address *"
               {...field("address")}
               autoComplete="street-address"
+              onChange={(e) => setAddress(e.target.value)}
               required
             />
             <div className="grid gap-5 sm:grid-cols-3">
@@ -224,6 +317,7 @@ export default function CreatePostingForm() {
                 label="City *"
                 {...field("city")}
                 autoComplete="address-level2"
+                onChange={(e) => setCity(e.target.value)}
                 required
               />
               <Field
@@ -244,6 +338,8 @@ export default function CreatePostingForm() {
                 {...field("bedrooms")}
                 type="number"
                 min="0"
+                defaultValue={0}
+                onChange={(e) => setBedrooms(e.target.valueAsNumber)}
                 required
               />
               <Field
@@ -252,9 +348,14 @@ export default function CreatePostingForm() {
                 type="number"
                 min="0"
                 step="0.5"
+                defaultValue={0}
+                onChange={(e) => setBathrooms(e.target.valueAsNumber)}
                 required
               />
-              <Field label="Floor area" {...field("area")} />
+              <Field label="Floor area"
+              {...field("area")}
+              onChange={(e) => setArea(e.target.valueAsNumber)}
+              />
             </div>
             <Textarea
               {...field("description")}
@@ -284,7 +385,9 @@ export default function CreatePostingForm() {
               at least 3 clear photos.
             </p>
             <div className="grid grid-cols-3 gap-3">
-              {photos.map((photo, index) => (
+              {/* need to add file uploading */}
+
+              {/* {photos.map((photo, index) => (
                 <div
                   key={`${photo.src}-${index}`}
                   className="group relative aspect-[1.7] overflow-hidden rounded-lg bg-poly-green-light">
@@ -301,7 +404,7 @@ export default function CreatePostingForm() {
                     </span>
                   )}
                 </div>
-              ))}
+              ))} */}
             </div>
             <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-dashed border-border-inputs p-4">
               <p className="flex items-center gap-3 text-xs text-under-input">
@@ -338,11 +441,22 @@ export default function CreatePostingForm() {
                 label="Available from *"
                 {...field("available")}
                 type="date"
+                onChange={(e) => {
+                  const setDate = e.target.valueAsDate;
+                  if(setDate === null){
+                    setStartDate(new Date("January 1 2026"))
+                  } else {
+                    setStartDate(setDate)
+                  }
+
+                }}
                 required
               />
               <SelectField
                 label="Lease length *"
-                {...field("leaseLength")}>
+                {...field("leaseLength")}
+                onChange={(e) => setLeaseLength(e.target.value)}
+                >
                 {[
                   "12 months",
                   "9 months",
@@ -356,13 +470,14 @@ export default function CreatePostingForm() {
                 label="Lease ends"
                 {...field("leaseEnd")}
                 type="date"
-                min={values.available}
+                min={startDate.toDateString()}
               />
               <Field
                 label="Maximum residents *"
                 {...field("residents")}
                 type="number"
                 min="1"
+                defaultValue={1}
                 required
               />
             </div>
@@ -388,6 +503,11 @@ export default function CreatePostingForm() {
                 {...field("rent")}
                 type="number"
                 min="0"
+                defaultValue={0}
+                onChange={(e) => {
+                  const changeRent = e.target.valueAsNumber;
+                  Number.isNaN(changeRent) ? setRent(0) : setRent(changeRent);
+                }}
                 required
               />
               <Field
@@ -395,6 +515,7 @@ export default function CreatePostingForm() {
                 {...field("deposit")}
                 type="number"
                 min="0"
+                defaultValue={0}
                 required
               />
               <Field
@@ -402,6 +523,7 @@ export default function CreatePostingForm() {
                 {...field("applicationFee")}
                 type="number"
                 min="0"
+                defaultValue={0}
               />
             </div>
             <div className="space-y-4 border-t border-border-inputs pt-5">
@@ -548,12 +670,13 @@ export default function CreatePostingForm() {
                   Preview listing
                 </Button>
                 <Button
-                  type="button"
+                  type="submit"
                   className={`${buttonClass} hover:bg-green-button-click`}>
                   <Icon name="arrow" /> Publish listing
                 </Button>
               </div>
             </div>
+            {ifError && <p className="text-red-500 text-sm">{ifError}</p>}
           </section>
         </div>
 
@@ -564,7 +687,7 @@ export default function CreatePostingForm() {
             </h2>
             {listingPreview()}
           </section>
-          <section className="rounded-xl border border-border-inputs bg-white p-5">
+          {/* <section className="rounded-xl border border-border-inputs bg-white p-5">
             <h2 className="mb-5 text-base font-semibold">
               Before you publish
             </h2>
@@ -580,7 +703,7 @@ export default function CreatePostingForm() {
                 </li>
               ))}
             </ul>
-          </section>
+          </section> */}
           <section className="space-y-3 rounded-xl bg-[#efecdf] p-5">
             <Icon
               name="bulb"
@@ -601,6 +724,7 @@ export default function CreatePostingForm() {
           </p>
         </aside>
       </div>
-    </div>
+    {/* </div> */}
+    </form>
   );
 }
