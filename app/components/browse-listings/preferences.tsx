@@ -113,9 +113,13 @@ export default function Preferences() {
             </fieldset>
           ))}
 
-          <Button className="h-10 w-full text-xs font-semibold sm:col-span-2 lg:col-span-1">
-            Apply filters
-          </Button>
+          <form method="get" action="/listings">
+            <input name="max_price" />
+            <input name="bedrooms" />
+            <Button type="submit" variant="primary" className="h-10 w-full text-xs font-semibold sm:col-span-2 lg:col-span-1">Apply</Button>
+          </form>
+
+
         </div>
       </section>
       <div className="mt-3.5 hidden rounded-xl bg-mini-labels p-4 lg:block">
