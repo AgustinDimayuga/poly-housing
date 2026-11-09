@@ -113,14 +113,24 @@ export default function CreatePostingForm() {
     const applicationFee = formData.get("applicationFee");
 
 
-    const utilities = {
-      "water": formData.get("water") === "on",
-      "trash": formData.get("trash") === "on",
-      "parkingIncluded": formData.get("parkingIncluded") === "on",
-      "electricity": formData.get("electricity") === "on",
-      "gas": formData.get("gas") === "on",
-      "internet": formData.get("internet") === "on"
-    }
+    // const utilities = {
+    //   "water": formData.get("water") === "on",
+    //   "trash": formData.get("trash") === "on",
+    //   "parkingIncluded": formData.get("parkingIncluded") === "on",
+    //   "electricity": formData.get("electricity") === "on",
+    //   "gas": formData.get("gas") === "on",
+    //   "internet": formData.get("internet") === "on"
+    // }
+
+
+    const utilities = [
+      formData.get("water") === "on" ? "water" : null,
+      formData.get("trash") === "on" ? "trash" : null,
+      formData.get("parkingIncluded") === "on" ? "parkingIncluded" : null,
+      formData.get("electricity") === "on" ? "electricity" : null,
+      formData.get("gas") === "on" ? "gas" : null,
+      formData.get("internet") === "on" ? "internet" : null
+    ]
 
     const utilityCost = {
       "electricity and gas": formData.get("electricityEstimate"),
@@ -142,8 +152,6 @@ export default function CreatePostingForm() {
     const guidelines = formData.get("guidelines");
 
     const students = formData.get("students");
-
-    // if(students !== true
 
     // need to update the listings table to cover more data
     const listingData = {
@@ -178,9 +186,7 @@ export default function CreatePostingForm() {
       setError("Could not create listing");
       return
     }
-
   }
-
 
   function listingPreview() {
     return (

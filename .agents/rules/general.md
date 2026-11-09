@@ -3,3 +3,4 @@ x## Must-Read
 - If there are components needed to be created for the front-end created a folder to place those components inside of the components if there is'nt one created yet
 - For Styling Purposes use tailwind
 - While creating an front-end page also make sure it is mobile friendly
+- Always Make a static display based on the information given don't make it dynamic 
