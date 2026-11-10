@@ -165,7 +165,7 @@ export default function CreatePostingForm() {
       monthly_price: rent,
       available_from: startDate,
       available_to: endDate,
-      status: "pending idk",
+      status: "PENDING",
       address: address,
       description: description,
       amenities: amenities.map((am) => am !== null)
@@ -360,6 +360,8 @@ export default function CreatePostingForm() {
               />
               <Field label="Floor area"
               {...field("area")}
+              type="number"
+              min="0"
               onChange={(e) => setArea(e.target.valueAsNumber)}
               />
             </div>
@@ -454,7 +456,6 @@ export default function CreatePostingForm() {
                   } else {
                     setStartDate(setDate)
                   }
-
                 }}
                 required
               />
