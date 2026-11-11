@@ -1,14 +1,25 @@
-import type { ReactNode } from "react";
+"use client"
+
+import { useActionState, type ReactNode } from "react";
 import Link from "next/link";
 import Button from "../button";
 import Textbox from "../text";
 import Textarea from "../textarea";
 import Icon from "../browse-listings/icon";
+import React from "react";
 
 const inputClass =
   "min-h-[42px] w-full px-2.5 text-[13px] outline-none focus:border-poly-green-dark focus:ring-2 focus:ring-poly-green-dark/15";
-const review =
-  "I shared Cedar House with two other students during the 2025–26 school year. The living room and backyard gave us plenty of shared space. Emma was easy to reach, and our dryer repair was handled within a few days.\nWater and trash were included, but our gas bill was higher in winter. I’d recommend agreeing on the room sizes and rent split before you sign.";
+// const review =
+//   "I shared Cedar House with two other students during the 2025–26 school year. The living room and backyard gave us plenty of shared space. Emma was easy to reach, and our dryer repair was handled within a few days.\nWater and trash were included, but our gas bill was higher in winter. I’d recommend agreeing on the room sizes and rent split before you sign.";
+
+// function submitReview(
+//   formData: FormData
+// ){
+
+// }
+
+
 
 function Section({
   title,
@@ -28,10 +39,12 @@ function Section({
 function StarRating({
   label,
   initialValue,
+  changeRating,
   required = false
 }: {
   label: string;
   initialValue: number;
+  changeRating: React.Dispatch<React.SetStateAction<number>>
   required?: boolean;
 }) {
   return (
@@ -47,7 +60,8 @@ function StarRating({
         {[1, 2, 3, 4, 5].map((value) => (
           <span
             key={value}
-            className="flex size-[31px] items-center justify-center">
+            className="flex size-[31px] items-center justify-center hover:bg-red"
+            onClick={() => value === initialValue ? changeRating(-1) : changeRating(value)}>
             <svg
               aria-hidden="true"
               viewBox="0 0 24 24"
@@ -60,7 +74,8 @@ function StarRating({
                   ? "currentColor"
                   : "#7b867e"
               }
-              strokeWidth="1.5">
+              strokeWidth="1.5"
+              >
               <path d="m12 3 2.6 6.4 6.9.5-5.3 4.5 1.7 6.6-5.9-3.7L6.1 21l1.7-6.6-5.3-4.5 6.9-.5Z" />
             </svg>
           </span>
@@ -71,8 +86,20 @@ function StarRating({
 }
 
 export default function ReviewForm() {
+  // const [state, formAction, isPending] = useActionState()
+
+  const [overallRating, setOverallRating] = React.useState(-1);
+  const [condRating, setCondRating] = React.useState(-1);
+  const [landlordRating, setLandlordRating] = React.useState(-1);
+  const [maintRating, setMaintRating] = React.useState(-1)
+
+  const [review, setReview] = React.useState("");
+
   return (
-    <div className="flex min-w-0 flex-col gap-5 text-[13px] [&_label]:text-xs [&_label]:font-medium [&_input]:font-normal [&_textarea]:font-normal [&_input[type=checkbox]]:size-4 [&_input[type=checkbox]]:shrink-0 [&_input[type=checkbox]]:accent-poly-green-dark">
+    <form
+    className="flex min-w-0 flex-col gap-5 text-[13px] [&_label]:text-xs [&_label]:font-medium [&_input]:font-normal [&_textarea]:font-normal [&_input[type=checkbox]]:size-4 [&_input[type=checkbox]]:shrink-0 [&_input[type=checkbox]]:accent-poly-green-dark"
+    action={submitReview}
+    >
       <Section title="When did you live here?">
         <div className="grid gap-4 sm:grid-cols-2">
           <Textbox
@@ -121,7 +148,7 @@ export default function ReviewForm() {
           <Textbox
             id="monthly-rent"
             name="monthlyRent"
-            defaultValue="$1,200 · my share"
+            // defaultValue="$1,200 · my share"
             className={inputClass}>
             Monthly rent you paid
           </Textbox>
@@ -132,20 +159,24 @@ export default function ReviewForm() {
         <div className="-mb-2 -mt-2">
           <StarRating
             label="Overall experience"
-            initialValue={4}
+            initialValue={overallRating}
+            changeRating={setOverallRating}
             required
           />
           <StarRating
             label="Property condition"
-            initialValue={4}
+            initialValue={condRating}
+            changeRating={setCondRating}
           />
           <StarRating
             label="Landlord communication"
-            initialValue={5}
+            initialValue={landlordRating}
+            changeRating={setLandlordRating}
           />
           <StarRating
             label="Maintenance response"
-            initialValue={4}
+            initialValue={maintRating}
+            changeRating={setMaintRating}
           />
         </div>
       </Section>
@@ -155,7 +186,7 @@ export default function ReviewForm() {
           <Textbox
             id="review-title"
             name="title"
-            defaultValue="A good home for a roommate group"
+            // defaultValue="A good home for a roommate group"
             required
             maxLength={150}
             className={inputClass}>
@@ -165,8 +196,9 @@ export default function ReviewForm() {
             id="review"
             name="review"
             required
-            maxLength={2000}
-            defaultValue={review}
+            maxLength={100}
+            // defaultValue={review}
+            onChange={(e) => setReview(e.target.value)}
             aria-describedby="review-help"
             className={`${inputClass} min-h-[96px] resize-y leading-[19px]`}>
             Your review *
@@ -199,7 +231,7 @@ export default function ReviewForm() {
           <Textbox
             id="display-name"
             name="displayName"
-            defaultValue="Jamie L."
+            // defaultValue="Jamie L."
             className={inputClass}>
             Display name
           </Textbox>
@@ -227,7 +259,7 @@ export default function ReviewForm() {
               type="checkbox"
               name="livedHere"
               required
-              defaultChecked
+              // defaultChecked
               className="mt-px"
             />
             I personally lived at this property and this
@@ -238,7 +270,7 @@ export default function ReviewForm() {
               type="checkbox"
               name="guidelinesAccepted"
               required
-              defaultChecked
+              // defaultChecked
               className="mt-px"
             />
             My review follows the Community Guidelines. *
@@ -255,14 +287,14 @@ export default function ReviewForm() {
               Cancel
             </Link>
             <Button
-              type="button"
-              className="flex min-h-10 items-center gap-2 px-4 py-2.5 font-medium hover:bg-green-button-click focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-poly-green-dark">
+              type="submit"
+              className="flex min-h-10 items-center gap-2 px-4 py-2.5 font-medium hover:bg-green-button-click focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-poly-green-dark" >
               <Icon name="arrow" />
               Submit review
             </Button>
           </div>
         </div>
       </Section>
-    </div>
+    </form>
   );
 }

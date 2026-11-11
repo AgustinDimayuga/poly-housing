@@ -37,8 +37,7 @@ export default function ReviewsPage() {
             Help the next student make an informed choice.
           </h1>
           <p className="mt-2 text-[13px] leading-5 text-under-input">
-            Tell students what living here was like, from the
-            monthly costs to everyday maintenance.
+            Tell students what living here was like
           </p>
         </div>
         <div className="grid items-start gap-7 md:grid-cols-[240px_minmax(0,1fr)] lg:grid-cols-[288px_minmax(0,1fr)]">
