@@ -8,7 +8,7 @@ const links = [
   { label: "Saved homes", href: "#" }
 ];
 
-export default function Header() {
+export default function NavBar() {
   return (
     <header className="w-full bg-white text-black shadow-md">
       <div className="flex w-full items-center justify-between gap-4 px-6 py-4 lg:px-10">
@@ -52,7 +52,7 @@ export default function Header() {
             + Post listing
           </Button>
           <Link
-            href="#"
+            href="/login"
             className="whitespace-nowrap font-inter font-bold hover:underline">
             Log in
           </Link>
