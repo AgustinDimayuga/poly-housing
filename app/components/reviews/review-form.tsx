@@ -7,6 +7,7 @@ import Textbox from "../text";
 import Textarea from "../textarea";
 import Icon from "../browse-listings/icon";
 import React from "react";
+import { postReview } from "./actions";
 
 const inputClass =
   "min-h-[42px] w-full px-2.5 text-[13px] outline-none focus:border-poly-green-dark focus:ring-2 focus:ring-poly-green-dark/15";
@@ -38,11 +39,13 @@ function Section({
 
 function StarRating({
   label,
+  name,
   initialValue,
   changeRating,
   required = false
 }: {
   label: string;
+  name: string;
   initialValue: number;
   changeRating: React.Dispatch<React.SetStateAction<number>>
   required?: boolean;
@@ -80,13 +83,14 @@ function StarRating({
             </svg>
           </span>
         ))}
+        <input name={name} value={initialValue} readOnly={true} hidden></input>
       </div>
     </div>
   );
 }
 
 export default function ReviewForm() {
-  // const [state, formAction, isPending] = useActionState()
+  const [state, formAction, isPending] = useActionState(postReview, {})
 
   const [overallRating, setOverallRating] = React.useState(-1);
   const [condRating, setCondRating] = React.useState(-1);
@@ -98,7 +102,7 @@ export default function ReviewForm() {
   return (
     <form
     className="flex min-w-0 flex-col gap-5 text-[13px] [&_label]:text-xs [&_label]:font-medium [&_input]:font-normal [&_textarea]:font-normal [&_input[type=checkbox]]:size-4 [&_input[type=checkbox]]:shrink-0 [&_input[type=checkbox]]:accent-poly-green-dark"
-    action={submitReview}
+    action={formAction}
     >
       <Section title="When did you live here?">
         <div className="grid gap-4 sm:grid-cols-2">
@@ -161,22 +165,26 @@ export default function ReviewForm() {
             label="Overall experience"
             initialValue={overallRating}
             changeRating={setOverallRating}
+            name="overallRating"
             required
           />
           <StarRating
             label="Property condition"
             initialValue={condRating}
             changeRating={setCondRating}
+            name="condRating"
           />
           <StarRating
             label="Landlord communication"
             initialValue={landlordRating}
             changeRating={setLandlordRating}
+            name="landlordRating"
           />
           <StarRating
             label="Maintenance response"
             initialValue={maintRating}
             changeRating={setMaintRating}
+            name="maintRating"
           />
         </div>
       </Section>
@@ -212,14 +220,14 @@ export default function ReviewForm() {
           <Textarea
             id="budget"
             name="budget"
-            defaultValue="My share of electricity, gas and internet was usually $50–$80 per month. Winter gas was the biggest variable."
+            // defaultValue="My share of electricity, gas and internet was usually $50–$80 per month. Winter gas was the biggest variable."
             className={`${inputClass} min-h-[96px] resize-y leading-[19px]`}>
             Anything students should budget for?
           </Textarea>
           <Textbox
             id="advice"
             name="advice"
-            defaultValue="Bring a bike and discuss the rent split with roommates before signing."
+            // defaultValue="Bring a bike and discuss the rent split with roommates before signing."
             className={inputClass}>
             Advice for the next residents (optional)
           </Textbox>
