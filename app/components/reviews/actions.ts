@@ -9,10 +9,20 @@ export async function postReview(
   formData: FormData
 ): Promise<PostState> {
   const moveIn = formData.get("moveIn");
-  const moveOut = formData.get("moveOut");
   const currentResident =
     formData.get("currentResident") === "on";
-  const arrangement = formData.get("arrangement");
+
+  let moveOut;
+  let arrangement;
+
+  if (currentResident) {
+    moveOut = "N/A";
+    arrangement = "current";
+  } else {
+    moveOut = formData.get("moveOut");
+    arrangement = "former";
+  }
+  // const arrangement = formData.get("arrangement");
   const rent = formData.get("monthlyRent");
 
   //add stuff for the ratings here

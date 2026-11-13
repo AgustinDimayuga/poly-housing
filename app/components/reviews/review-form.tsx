@@ -97,7 +97,10 @@ export default function ReviewForm() {
   const [landlordRating, setLandlordRating] = React.useState(-1);
   const [maintRating, setMaintRating] = React.useState(-1)
 
+
   const [review, setReview] = React.useState("");
+
+  const [curResident, setCurResident] = React.useState(false);
 
   return (
     <form
@@ -115,7 +118,7 @@ export default function ReviewForm() {
             className={inputClass}>
             Move-in month &amp; year *
           </Textbox>
-          <Textbox
+          {!curResident && <Textbox
             id="move-out"
             name="moveOut"
             type="month"
@@ -124,10 +127,10 @@ export default function ReviewForm() {
             required
             className={inputClass}>
             Move-out month &amp; year *
-          </Textbox>
+          </Textbox>}
         </div>
         <label className="my-4 flex items-center gap-2">
-          <input type="checkbox" name="currentResident" />I
+          <input type="checkbox" name="currentResident" onChange={() => setCurResident(!curResident)}/>I
           currently live here
         </label>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -243,7 +246,7 @@ export default function ReviewForm() {
             className={inputClass}>
             Display name
           </Textbox>
-          <label
+          {/* <label
             htmlFor="relationship"
             className="flex flex-col gap-3">
             Relationship to property
@@ -255,7 +258,7 @@ export default function ReviewForm() {
               <option value="former">Former resident</option>
               <option value="current">Current resident</option>
             </select>
-          </label>
+          </label> */}
         </div>
         <p className="my-4 text-[11px] leading-[18px] text-under-input">
           Your email and exact move-in / move-out dates won’t be
