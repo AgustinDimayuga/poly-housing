@@ -3,6 +3,8 @@ import { Listing } from "./listings";
 export type ListingFilters = {
   maxPrice?: number;
   bedrooms?: number;
+  moveIn?: string;
+  search?: string;
 };
 
 export async function filterListingsfilters(
@@ -15,6 +17,9 @@ export async function filterListingsfilters(
   }
   if (filters.bedrooms !== undefined) {
     params.set("bedrooms", String(filters.bedrooms));
+  }
+  if (filters.moveIn) {
+    params.set("move_in", filters.moveIn);
   }
   const response = await fetch(
     `${process.env.API_URL}/listings/filter?${params}`,

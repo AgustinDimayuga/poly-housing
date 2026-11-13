@@ -174,11 +174,12 @@ def search_listings(
     max_price: int | None = None,
     bedrooms: int | None = None,
     # type: str | None = None,
-    # move_in: date | None = None,
-    # lease_months: int | None = None
+    move_in: date | None = None,
+    search: str | None = None,
 ):
     conditions = []
     query_params = {}
+
     if min_price is not None:
         conditions.append("listing.price_monthly >= :min_price")
         query_params["min_price"] = min_price
@@ -189,16 +190,19 @@ def search_listings(
     if bedrooms is not None:
         conditions.append("listing.bedroom = :bedrooms")
         query_params["bedrooms"] = bedrooms
+    if move_in is not None:
+        conditions.append(
+            "listing.available_from <= :move_in AND listing.available_to > :move_in"
+        )
+        query_params["move_in"] = move_in
+    if search is not None:
+        conditions.append(
+            "(listing.city ILIKE :search OR listing.address ILIKE :search OR campus.campus ILIKE :search)"
+        )
+        query_params["search"] = f"{search.strip()}%"
     # if type:
     #     conditions.append("listing.type = :type")
     #     query_params["type"] = type
-    # if move_in is not None:
-    #     conditions.append("listing.available_from <= :move_in")
-    #     query_params["move_in"] = move_in
-    # if lease_months is not None:
-    #     conditions.append("listing.available_to >= :lease_end")
-    #     lease_end = move_in + timedelta(days=30 * lease_months)
-    #     query_params["lease_end"] = lease_end
 
     where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
 

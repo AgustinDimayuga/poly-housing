@@ -1,8 +1,12 @@
 import Button from "../button";
 import Textbox from "../text";
 import Icon from "./icon";
+import Link from "next/link";
+import Form from "next/form";
 
-export default function Preferences() {
+type Current = { maxPrice: string; bedrooms: string , moveIn: string};
+
+export default function Preferences({current} : {current: Current}) {
   return (
     <aside className="">
       <section
@@ -13,66 +17,74 @@ export default function Preferences() {
           className="text-lg font-semibold tracking-tight">
           Your preferences
         </h2>
-        <div className="mt-5 grid grid-cols-1 gap-x-5 sm:grid-cols-2 lg:grid-cols-1">
+        <Form
+          key={`${current.maxPrice}|${current.bedrooms}|${current.moveIn}`}
+          action="/listings"
+          scroll={false}
+          className="mt-5 grid grid-cols-1 gap-x-5 sm:grid-cols-2 lg:grid-cols-1">
           <div className="mb-5 flex items-center justify-between text-[11px] sm:col-span-2 lg:col-span-1">
             <p className="text-under-input">
               Refine your search
             </p>
-            <Button
-              variant="white"
-              className="border-0! p-0! text-poly-green-dark!">
+            <Link href="/listings" className="text-poly-green-dark">
               Reset
-            </Button>
+              </Link>
           </div>
+
           <div className="mb-5 [&_label]:text-xs [&_label]:font-medium [&>div]:gap-2">
             <Textbox
               id="browse-rent"
-              defaultValue="Up to $4,500"
+              name="max_price"
+              type="number"
+              min="0"
+              placeholder="e.g. 3000"
+              defaultValue={current.maxPrice}
               className="h-11 w-full text-xs font-normal">
-              Monthly rent · entire home
+              Max monthly rent
             </Textbox>
-            <div
-              aria-hidden="true"
-              className="mt-4 h-1 rounded-full bg-mini-labels">
-              <div className="h-full w-[70%] rounded-full bg-poly-green-dark" />
-            </div>
           </div>
+
           <fieldset className="mb-5 min-w-0">
             <legend className="mb-2 text-xs font-medium">
               Bedrooms
             </legend>
             <div className="flex h-11 items-center justify-between rounded-md border border-border-inputs px-3 text-xs">
-              {["Any", "1", "2", "3", "4+"].map((beds) => (
-                <Button
-                  key={beds}
-                  variant="white"
-                  className="border-0! bg-transparent! px-1 py-0 text-xs">
-                  {beds}
-                </Button>
+              {[
+                { label: "1", value: "1" },
+                { label: "2", value: "2" },
+                { label: "3", value: "3" },
+                 { label: "4+", value: "" },
+              ].map((opt) => (
+                <label key={opt.label} className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    name="bedrooms"
+                    value={opt.value}
+                    defaultChecked={current.bedrooms === opt.value}
+                    className="accent-poly-green-dark"
+                  />
+                  {opt.label}
+                </label>
               ))}
             </div>
           </fieldset>
+
+
           <div className="mb-5 min-w-0 [&_label]:text-xs [&_label]:font-medium [&>div]:gap-2">
             <Textbox
               id="browse-move-in"
-              defaultValue="Aug 15 – Sep 15, 2027"
+              name="move_in"
+              type="date"
+              defaultValue={current.moveIn}
               className="h-11 w-full min-w-0 text-xs font-normal">
               Move-in date
-            </Textbox>
-          </div>
-          <div className="mb-5 min-w-0 [&_label]:text-xs [&_label]:font-medium [&>div]:gap-2">
-            <Textbox
-              id="browse-lease-length"
-              defaultValue="Academic year or 12 months"
-              className="h-11 w-full min-w-0 text-xs font-normal">
-              Lease length
             </Textbox>
           </div>
           {[
             {
               title: "Home type",
               options: [
-                { label: "House", checked: true },
+                { label: "House", checked: false },
                 { label: "Apartment", checked: false },
                 { label: "Studio", checked: false }
               ]
@@ -90,11 +102,13 @@ export default function Preferences() {
               key={group.title}
               className="mb-5 border-t border-border-inputs pt-5">
               <legend className="sr-only">{group.title}</legend>
+
               <p
                 aria-hidden="true"
                 className="mb-4 text-xs font-medium">
                 {group.title}
               </p>
+
               <div className="flex flex-col gap-4">
                 {group.options.map((option) => (
                   <label
@@ -113,14 +127,11 @@ export default function Preferences() {
             </fieldset>
           ))}
 
-          <form method="get" action="/listings">
-            <input name="max_price" />
-            <input name="bedrooms" />
-            <Button type="submit" variant="primary" className="h-10 w-full text-xs font-semibold sm:col-span-2 lg:col-span-1">Apply</Button>
-          </form>
+          <Button type="submit" variant="primary" className="h-10 w-full text-xs font-semibold sm:col-span-2 lg:col-span-1">
+            Apply Filters
+          </Button>
 
-
-        </div>
+        </Form>
       </section>
       <div className="mt-3.5 hidden rounded-xl bg-mini-labels p-4 lg:block">
         <Icon

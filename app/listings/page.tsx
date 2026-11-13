@@ -7,13 +7,13 @@ import SearchBar from "../components/browse-listings/search-bar";
 import Preferences from "../components/browse-listings/preferences";
 import { requireUser } from "../shared/auth";
 
-import {getListings} from "../listings/listings"
 import { filterListingsfilters } from "./navbar";
 // import { SearchParams } from "next/dist/server/request/search-params";
 
 type SearchParams = Promise<{ // NEXT.js automatically reads and parses into the page and we define it here (search it up or Ask Miguel )
   max_price?: string;
   bedrooms?: string;
+  move_in?: string;
 }>;
 
 
@@ -24,6 +24,7 @@ export default async function BrowseListingsPage({searchParams,} : { searchParam
    const listings = await filterListingsfilters({
     maxPrice: sp.max_price ? Number(sp.max_price) : undefined,
     bedrooms: sp.bedrooms ? Number(sp.bedrooms) : undefined,
+    moveIn: sp.move_in || undefined,
   }); // fetch all listings from the API
 
   const total = listings.length; // get the total number of listings
@@ -50,11 +51,15 @@ export default async function BrowseListingsPage({searchParams,} : { searchParam
         </section>
         <SearchBar />
 
-         {/* and of the title and search bar */}
+         {/* end of the title and search bar */}
 
 
         <div className="mt-6 grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <Preferences />
+          <Preferences current={{
+            maxPrice: sp.max_price ?? "",
+            bedrooms: sp.bedrooms ?? "",
+            moveIn: sp.move_in ?? "",
+          }}/>
           <section
             className="min-w-0"
             aria-label="Housing results">
@@ -64,7 +69,7 @@ export default async function BrowseListingsPage({searchParams,} : { searchParam
                   {total} homes for Fall 2027
                 </h2>
                 <p className="mt-1 text-[11px] text-under-input">
-                 {total == 0 ? "No homes found" : 'showing ${visible.length} of ${total} in San Luis Obispo'}
+                 {total == 0 ? "No homes found" : `showing ${visible.length} of ${total} in San Luis Obispo`}
                 </p>
               </div>
               <div className="flex h-10 shrink-0 items-center gap-1.5 rounded-lg border border-border-inputs bg-white px-2.5 text-xs font-medium sm:px-4">
@@ -75,20 +80,8 @@ export default async function BrowseListingsPage({searchParams,} : { searchParam
                 Sort: Best match
               </div>
             </div>
-            <div className="mt-4 mb-4 flex flex-wrap gap-2">
-              {[
-                "Students welcome",
-                "Fall move-in ×",
-                "Up to $4,500 ×"
-              ].map((label) => (
-                <span
-                  key={label}
-                  className="rounded-full bg-mini-labels px-2.5 py-1 text-[10px] font-medium text-poly-green-dark">
-                  {label}
-                </span>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 gap-4 min-[540px]:grid-cols-2 lg:grid-cols-3">
+
+            <div className="grid grid-cols-1 gap-4 min-[540px]:grid-cols-2 lg:grid-cols-3 mt-5">
               {visible.map((listing) => (
                 <ListingCard key={listing.id} listing={listing} />
               ))}

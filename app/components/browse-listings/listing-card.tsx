@@ -3,12 +3,12 @@ import Link from "next/link";
 import Icon from "./icon";
 import { dateLabel, number, type Home } from "./data";
 
-import type { ApiListing as Apilisting } from "../../listings/listings";
+import type { ApiListing  } from "../../listings/listings";
 import { formatPrice, formatDate } from "../../listings/format";
 
 
 // still needs picture to be inserted
-export default function ListingCard({listing}: {listing: Apilisting}) {
+export default function ListingCard({listing}: {listing: ApiListing}) {
   const title = `${listing.bedroom} bed ${listing.type}`;
   return (
     <article className="overflow-hidden rounded-xl border border-border-inputs bg-white shadow-[0_3px_10px_#20382f04]">
@@ -38,11 +38,13 @@ export default function ListingCard({listing}: {listing: Apilisting}) {
           </span>
         </p>
         <h3 className="mb-2 text-[15px] font-semibold capitalize">
-          <Link
+            {listing.address} , {listing.city}
+          {/* <Link
             href="/listing"
             className="hover:underline hover:underline-offset-4">
             {title}
-          </Link>
+          </Link> */}
+
         </h3>
         <p className="mb-2 text-[11px] text-under-input">
           {listing.address} · {listing.city}
