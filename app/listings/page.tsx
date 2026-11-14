@@ -14,6 +14,7 @@ type SearchParams = Promise<{ // NEXT.js automatically reads and parses into the
   max_price?: string;
   bedrooms?: string;
   move_in?: string;
+  search?:string;
 }>;
 
 
@@ -25,6 +26,7 @@ export default async function BrowseListingsPage({searchParams,} : { searchParam
     maxPrice: sp.max_price ? Number(sp.max_price) : undefined,
     bedrooms: sp.bedrooms ? Number(sp.bedrooms) : undefined,
     moveIn: sp.move_in || undefined,
+    search: sp.search || undefined,
   }); // fetch all listings from the API
 
   const total = listings.length; // get the total number of listings
@@ -49,7 +51,12 @@ export default async function BrowseListingsPage({searchParams,} : { searchParam
             that fit your plans.
           </p>
         </section>
-        <SearchBar />
+        <SearchBar current={{
+          search: sp.search ?? "",
+          maxPrice: sp.max_price ?? "",
+          bedrooms: sp.bedrooms ?? "",
+          moveIn: sp.move_in ?? "",
+        }}/>
 
          {/* end of the title and search bar */}
 
@@ -59,6 +66,7 @@ export default async function BrowseListingsPage({searchParams,} : { searchParam
             maxPrice: sp.max_price ?? "",
             bedrooms: sp.bedrooms ?? "",
             moveIn: sp.move_in ?? "",
+            search: sp.search ?? ""
           }}/>
           <section
             className="min-w-0"

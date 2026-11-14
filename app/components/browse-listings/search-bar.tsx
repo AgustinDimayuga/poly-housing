@@ -1,10 +1,24 @@
+
+import Form from "next/form";
 import Button from "../button";
 import Textbox from "../text";
 import Icon from "./icon";
 
-export default function SearchBar() {
+type Current = {
+  search: string;
+  maxPrice: string;
+  bedrooms: string;
+  moveIn: string;
+};
+export default function SearchBar({current} : {current : Current}) {
   return (
-    <div className="mt-6 flex flex-wrap items-center gap-2.5 rounded-xl border border-border-inputs bg-white p-3">
+    <Form
+    key={`${current.maxPrice}|${current.bedrooms}|${current.moveIn}|${current.search}`}
+    action="/listings"
+
+
+
+    className="mt-6 flex flex-wrap items-center gap-2.5 rounded-xl border border-border-inputs bg-white p-3">
       <div className="relative min-w-0 basis-full md:flex-1 md:basis-auto [&_label]:sr-only [&>div]:gap-0">
         <Icon
           name="search"
@@ -12,6 +26,8 @@ export default function SearchBar() {
         />
         <Textbox
           id="browse-location"
+          name="search"
+          defaultValue={current.search}
           placeholder="San Luis Obispo, CA"
           className="h-10 w-full min-w-0 border-0! bg-poly-green-light! pl-10! text-xs">
           City, neighborhood, or address
@@ -25,10 +41,11 @@ export default function SearchBar() {
         Fall 2027
       </Button>
       <Button
+        type = "submit"
         className="flex h-10 flex-1 items-center justify-center gap-2 px-4 text-xs font-semibold md:flex-none">
         <Icon name="arrow" />
         Search housing
       </Button>
-    </div>
+    </Form>
   );
 }

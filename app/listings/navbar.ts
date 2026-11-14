@@ -21,6 +21,9 @@ export async function filterListingsfilters(
   if (filters.moveIn) {
     params.set("move_in", filters.moveIn);
   }
+  if (filters.search) {
+    params.set("search", filters.search);
+  }
   const response = await fetch(
     `${process.env.API_URL}/listings/filter?${params}`,
     { cache: "no-store" }

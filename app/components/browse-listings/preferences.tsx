@@ -4,7 +4,12 @@ import Icon from "./icon";
 import Link from "next/link";
 import Form from "next/form";
 
-type Current = { maxPrice: string; bedrooms: string , moveIn: string};
+type Current = {
+   maxPrice: string;
+   bedrooms: string ;
+   moveIn: string;
+  search : string
+  };
 
 export default function Preferences({current} : {current: Current}) {
   return (
@@ -18,10 +23,11 @@ export default function Preferences({current} : {current: Current}) {
           Your preferences
         </h2>
         <Form
-          key={`${current.maxPrice}|${current.bedrooms}|${current.moveIn}`}
+          key={`${current.maxPrice}|${current.bedrooms}|${current.moveIn} | ${current.search}`}
           action="/listings"
           scroll={false}
           className="mt-5 grid grid-cols-1 gap-x-5 sm:grid-cols-2 lg:grid-cols-1">
+          <input type="hidden" name="search" value={current.search} />
           <div className="mb-5 flex items-center justify-between text-[11px] sm:col-span-2 lg:col-span-1">
             <p className="text-under-input">
               Refine your search
