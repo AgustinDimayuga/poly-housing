@@ -7,48 +7,10 @@ import { useActionState } from "react";
 import { login } from "./actions";
 
 export default function LoginPage() {
-
-  const [ifcorrectPass, setPassState] = React.useState(true)
-  const [ifexistingEmail, setEmailState] = React.useState(true)
-
-  async function loginUser(event: SubmitEvent<HTMLFormElement>){
-    event.preventDefault()
-
-    const formData = new FormData(event.currentTarget);
-
-    const email = formData.get("email")
-    const password = formData.get("password")
-
-    //send password and check if they are matching on the server
-
-    const userCreds = {
-      email: email,
-      password: password
-    }
-
-    const response = await fetch('http://127.0.0.1:8000/users/auth', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(userCreds)
-    })
-
-    if(response.status === 200){
-      redirect("/listings");
-    }
-    else if (response.status === 401){
-      setPassState(false);
-      setEmailState(true)
-      return
-    }
-    else if (response.status === 404){
-      setEmailState(false)
-      setPassState(true)
-      return
-    }
-  }
-
+  const [state, formAction, isPending] = useActionState(
+    login,
+    {}
+  );
 
   return (
     <div className="flex justify-center-safe bg-poly-green-light min-h-screen min-w-screen">
@@ -60,33 +22,38 @@ export default function LoginPage() {
         </h1>
 
         <p className="mt-5">
-          New here?{" "}
-          <Link href="./" className="text-under-input hover:underline">
-            Create an Account -&gt;
+          new here?{" "}
+          <Link
+            href="./"
+            className="text-under-input hover:underline">
+            create an account -&gt;
           </Link>
         </p>
 
         <div className="">
-          {/* <h2>email address</h2> */}
-          <Textbox name="email" required>Email Address</Textbox>
-          {!ifexistingEmail && <p className="text-red-500 text-sm">Email not found</p>}
+          <Textbox
+            name="email"
+            defaultValue={state.email}
+            required>
+            email address
+          </Textbox>
         </div>
 
         <div className="">
-          {/* <h2>password</h2> */}
-          <Textbox name="password" type="password" required>Password</Textbox>
-          {!ifcorrectPass && <p className="text-red-500 text-sm">Incorrect Password</p>}
+          <Textbox name="password" type="password" required>
+            password
+          </Textbox>
         </div>
         <span className="text-red-600">{state.error}</span>
 
-        <div >
-          <label className="flex items-center gap-2">
+        <div className="flex flex-row items-center gap-2">
+          <label>
             <input
               type="checkbox"
               className="h-4 w-4 accent-green-800"
               name="stay"
             />
-            <span className="text-sm"> Stay Logged In?</span>
+            <span className="text-sm"> stay logged in?</span>
           </label>
         </div>
 
