@@ -1,13 +1,13 @@
+import sqlalchemy
+from fastapi import APIRouter, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel, Field
 from sqlalchemy.engine import create
 from sqlalchemy.exc import IntegrityError
-from fastapi import APIRouter, status, HTTPException
-from pydantic import BaseModel, Field
-import sqlalchemy
-from app import db
-from app.user_helper import *
 
+from app import db
 from app.model import LoginCreds, NewUser, Token
+from app.user_helper import *
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
