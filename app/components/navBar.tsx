@@ -1,11 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import Button from "./button";
+
 
 const links = [
   { label: "Find housing", href: "/listings" },
-  { label: "Subleases", href: "#" },
-  { label: "Saved homes", href: "#" }
+  { label: "Subleases", href: "/subleasings" },
+   { label: "", href: "#" }
 ];
 
 export default function NavBar() {
@@ -46,13 +48,14 @@ export default function NavBar() {
 
         {/* Right: actions, with margin from the edge */}
         <div className="hidden items-center gap-5 md:mr-6 md:flex lg:mr-12">
-          <Button
-            variant="white"
-            className="whitespace-nowrap p-2">
-            + Post listing
-          </Button>
           <Link
-            href="/login"
+           // href="/login"
+            href="/posting"
+            className="whitespace-nowrap rounded-md border border-border-inputs bg-white p-2 text-black active:bg-poly-green-light">
+            + Post listing
+          </Link>
+          <Link
+            href="./login"
             className="whitespace-nowrap font-inter font-bold hover:underline">
             Log in
           </Link>
@@ -81,11 +84,15 @@ export default function NavBar() {
               ))}
             </ul>
             <hr className="border-border-inputs" />
-            <Button variant="white" className="p-2">
-              + Post listing
-            </Button>
+
             <Link
-              href="#"
+              href="/posting"
+              className="rounded-md border border-border-inputs bg-white p-2 text-black active:bg-poly-green-light">
+              + Post listing
+            </Link>
+
+            <Link
+              href="/login"
               className="font-inter font-bold hover:underline">
               Log in
             </Link>

@@ -8,6 +8,7 @@ import ListingPricing from "../components/listing/pricing";
 import type { ListingPricingProps } from "../components/listing/pricing";
 import ListingReviews from "../components/listing/reviews";
 import type { ListingReviewsProps } from "../components/listing/reviews";
+import Link from "next/link";
 
 const listingReviews: ListingReviewsProps = {
   averageRating: 4.6,
@@ -158,23 +159,14 @@ export default function ListingPage() {
             <ListingReviews
               {...listingReviews}
               action={
-                <Button
+                <Link href = "/reviews">
+                 <Button
                   variant="white"
                   className="flex items-center gap-2 px-4 py-3 font-semibold !text-signup-title-green">
-                  <svg
-                    aria-hidden="true"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round">
-                    <path />
-                  </svg>
                   Write a review
                 </Button>
+                </Link>
+
               }
             />
           </div>
