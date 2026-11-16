@@ -47,7 +47,7 @@ export async function login(
     maxAge: 60 * 60 * 24 * 30 // ✅ 30 days
   });
 
-  redirect("/"); // must be outside any try/catch
+  redirect("/listings"); // must be outside any try/catch
 }
 export async function logout() {
   (await cookies()).delete("session");
