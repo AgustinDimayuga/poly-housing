@@ -5,61 +5,68 @@ import Button from "./components/button";
 import Textbox from "./components/text";
 import Bubble_text from "./components/bubble";
 import Link from "next/link";
-import { SubmitEvent } from "react";
-import { redirect } from "next/navigation";
 import React from "react";
+import type { FormEvent } from "react";
+import { signup } from "./signup/signup";
 
 export default function Home() {
 
-  const [userType, setUserType] = React.useState("Student");
-  const [ifStudent, setifStudent] = React.useState(true)
-  const [ifMatching, setifMatching] = React.useState(true)
-  const [ifSuccess, setSuccess] = React.useState(true);
+  // const [userType, setUserType] = React.useState("Student");
+  // const [ifStudent, setifStudent] = React.useState(true)
+  // const [ifMatching, setifMatching] = React.useState(true)
+  // const [ifSuccess, setSuccess] = React.useState(true);
 
-  async function createUser(event: SubmitEvent<HTMLFormElement>){
-    event.preventDefault();
+  const [role, setRole] = React.useState<"STUDENT" | "REALTOR">("STUDENT");
+  const [ifMatching, setifMatching] = React.useState(true);
+  const [error, setError] = React.useState("");
 
-    const formData = new FormData(event.currentTarget);
+  async function createUser(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  const form = new FormData(event.currentTarget);
 
-    const firstName = formData.get("fname")
-    const lastName = formData.get("lname")
-    const email = formData.get("email")
-    const password = formData.get("password")
-    const confirmPass = formData.get("confirmpass")
-    const wantUpdates = formData.get("wantupdates")
-
-    const fullName = `${firstName} ${lastName}`
-
-    if(password !== confirmPass){
-      setifMatching(false);
-      return
-    } else {
-      setifMatching(true);
-    }
-
-    const newUser = {
-        name: fullName,
-        email: email,
-        password: password,
-        role: userType
-      }
-
-    const response = await fetch('http://127.0.0.1:8000/users', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newUser)
-    })
-
-    if(response.status === 201){
-      console.log("created new user")
-      redirect("/listings")
-    } else {
-      setSuccess(false)
-    }
-
+  const password = String(form.get("password"));
+  if (password !== String(form.get("confirmpass"))) {
+    setifMatching(false);
+    return;
   }
+  setifMatching(true);
+
+  if (password.length < 8 || !/[0-9\W_]/.test(password)) {
+    setError("Password needs 8+ characters and a number or symbol.");
+    return;
+  }
+  setError("");
+
+
+  const base = {
+    name: `${form.get("fname")} ${form.get("lname")}`.trim(),
+    email: String(form.get("email")).trim().toLowerCase(),
+    password,
+    role,
+
+  };
+
+//   {
+//   "name": "string",
+//   "email": "string",
+//   "password": "string",
+//   "role": "STUDENT",
+//   "grad_year": 0,
+//   "campus_id": 0
+// }
+
+
+  const payload =
+    role === "STUDENT"
+      ? { ...base,   grad_year : 2030 , campus_id: 1 }
+      : {
+          ...base,  license_num : "12345", license_state: "CA"
+
+        };
+
+  const result = await signup(payload);
+  if (result?.error) setError(result.error);
+}
 
   return (
     <div className="grid min-h-screen grid-cols-1 bg-poly-green-light lg:grid-cols-2">
@@ -133,23 +140,20 @@ export default function Home() {
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-10">
 
           <Button
-            variant={ifStudent ? "primary" : "white"}
+            type="button"
+            variant={role === "STUDENT" ? "primary" : "white"}
             aria-label="Student"
             className="h-10 w-full"
-            onClick={() => {
-              setUserType("Student");
-              setifStudent(true);
-              }}>
+            onClick={() => setRole("STUDENT")}>
             Student
           </Button>
 
           <Button
-            variant={!ifStudent ? "primary" : "white"}
+            type="button"
+            variant={role === "REALTOR" ? "primary" : "white"}
             aria-label="Owner/Realtor"
             className="h-10 w-full"
-            onClick={() => {
-              setUserType("Realtor");
-              setifStudent(false)}}>
+            onClick={() => setRole("REALTOR")}>
             Owner/Realtor
           </Button>
 
@@ -203,6 +207,19 @@ export default function Home() {
             name="wantupdates"
           />
           <span className="text-sm">
+            {/* {role === "REALTOR" && (
+              <>
+                <Textbox placeholder="License number" name="license_num" required>
+                  License number
+                </Textbox>
+                <Textbox placeholder="e.g. CA" name="license_state" maxLength={2} required>
+                  License state
+                </Textbox>
+                <Textbox placeholder="Optional" name="office_location">
+                  Office location
+                </Textbox>
+              </>
+            )} */}
             Send me housing updates by email (optional)
           </span>
         </label>
@@ -214,7 +231,7 @@ export default function Home() {
           type="submit">
           Create Account
         </Button>
-        {!ifSuccess && <p className="text-red-500 text-sm">Error in creating account</p>}
+        {error && <p role="alert" className="text-red-500 text-sm"> {error}  </p>}
 
       </form>
     </div>
