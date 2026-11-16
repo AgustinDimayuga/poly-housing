@@ -1,6 +1,6 @@
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth, user, listings
+from app.routers import auth, user, listings, reviews
 
 from app.config import settings
 
@@ -26,3 +26,4 @@ app.include_router(api)
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(listings.router)
+app.include_router(reviews.router)

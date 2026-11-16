@@ -29,10 +29,6 @@ export default function ReviewPropertyCard() {
           Current listing: $3,600 / month
         </p>
       </div>
-      <p className="mt-4 text-[11px] leading-[17px] text-under-input">
-        Reviews are personal experiences, not verified safety
-        assessments.
-      </p>
     </aside>
   );
 }
