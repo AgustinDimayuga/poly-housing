@@ -3,13 +3,13 @@ import Link from "next/link";
 import Icon from "./icon";
 import { dateLabel, number, type Home } from "./data";
 
-import type { ApiListing  } from "../../listings/listings";
+import type { Listing  } from "../../listings/listings";
 import { formatPrice, formatDate } from "../../listings/format";
 
 
 // still needs picture to be inserted
-export default function ListingCard({listing}: {listing: ApiListing}) {
-  const title = `${listing.bedroom} bed ${listing.type}`;
+export default function ListingCard({listing}: {listing: Listing}) {
+  const title = `${listing.bedrooms} bed ${listing.type}`;
   return (
     <article className="overflow-hidden rounded-xl border border-border-inputs bg-white shadow-[0_3px_10px_#20382f04]">
       <div className="relative aspect-[1.9] overflow-hidden rounded-[10px] bg-mini-labels">
@@ -50,8 +50,8 @@ export default function ListingCard({listing}: {listing: ApiListing}) {
           {listing.address} · {listing.city}
         </p>
         <p className="mb-2 text-xs">
-          {listing.bedroom ? `${listing.bedroom} beds` : "Studio"} ·{" "}
-          {listing.bathroom} {listing.bathroom === 1 ? "bath" : "baths"} ·{" "}
+          {listing.bedrooms ? `${listing.bedrooms} beds` : "Studio"} ·{" "}
+          {listing.bathrooms} {listing.bathrooms === 1 ? "bath" : "baths"} ·{" "}
           {number(listing.square_ft)} sq ft
         </p>
         <p className="mb-2 flex items-center gap-1.5 border-t border-border-inputs pt-2 text-[11px]">

@@ -8,7 +8,7 @@ type Current = {
    maxPrice: string;
    bedrooms: string ;
    moveIn: string;
-  search : string
+   search : string
   };
 
 export default function Preferences({current} : {current: Current}) {
