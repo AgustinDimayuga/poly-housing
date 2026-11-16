@@ -8,6 +8,9 @@ export async function postReview(
   prevState: PostState,
   formData: FormData
 ): Promise<PostState> {
+  const userId = formData.get("userId");
+  const listingId = formData.get("userId");
+
   const moveIn = formData.get("moveIn");
   const currentResident =
     formData.get("currentResident") === "on";
@@ -37,9 +40,12 @@ export async function postReview(
   const budget = formData.get("budget");
   const advice = formData.get("advice");
   const displayName = formData.get("displayName");
-  const relationship = formData.get("relationship");
+  // const relationship = formData.get("relationship");
 
+  // need to add user id and (realtor id or listing id)
   const reviewPosting = {
+    userId: userId,
+    listingId: listingId,
     moveIn: moveIn,
     moveOut: moveOut,
     // currentResident: currentResident,
@@ -53,8 +59,8 @@ export async function postReview(
     review: review,
     budget: budget,
     advice: advice,
-    displayName: displayName,
-    relationship: relationship
+    displayName: displayName
+    // relationship: relationship
   };
 
   // const response = await fetch(`${process.env.API_URL}`, {

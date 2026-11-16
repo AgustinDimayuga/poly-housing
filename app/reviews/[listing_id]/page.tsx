@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "../components/browse-listings/footer";
-import ReviewPropertyCard from "../components/reviews/property-card";
-import ReviewForm from "../components/reviews/review-form";
+import Footer from "../../components/browse-listings/footer";
+import ReviewPropertyCard from "../../components/reviews/property-card";
+import ReviewForm from "../../components/reviews/review-form";
+import { requireUser } from "../../shared/auth";
 
 export const metadata: Metadata = {
   title: "Write a review · Cedar House · PolyHousing",
@@ -10,7 +11,30 @@ export const metadata: Metadata = {
     "Share your experience living at Cedar House and help the next student make an informed choice."
 };
 
-export default function ReviewsPage() {
+// will prob make this in the listings folder instead so that we dont create duplicate functions
+function getListing(listingId: number){
+return 1738
+}
+
+type Props = {
+  params: Promise<{ listing_id: string }>;
+};
+
+export default async function ReviewsPage({ params }: Props) {
+  const { listing_id } = await params;
+  const user = await requireUser();
+  const userId = user.id;
+
+  // const listing = await getListing(listing_id);
+
+  const listing = 1;
+
+  // let ifFound;
+
+  // listing ? ifFound = true : ifFound = false;
+
+
+
   return (
     <div className="flex flex-1 flex-col bg-[#f7f8f4] font-[Arial,sans-serif] text-signup-title-green">
       <main className="mx-auto w-full max-w-[1320px] flex-1 px-5 pb-10 pt-8 sm:px-8 sm:pt-11 lg:px-10">
@@ -41,8 +65,11 @@ export default function ReviewsPage() {
           </p>
         </div>
         <div className="grid items-start gap-7 md:grid-cols-[240px_minmax(0,1fr)] lg:grid-cols-[288px_minmax(0,1fr)]">
+          {listing && <>
           <ReviewPropertyCard />
-          <ReviewForm />
+          <ReviewForm userId={userId} listingId={Number.parseInt(listing_id)}/>
+          </>}
+          {!listing && <p>Cannot find listing</p>}
         </div>
       </main>
       <Footer />

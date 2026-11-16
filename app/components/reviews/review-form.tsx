@@ -9,6 +9,7 @@ import Icon from "../browse-listings/icon";
 import React from "react";
 import { postReview } from "./actions";
 
+
 const inputClass =
   "min-h-[42px] w-full px-2.5 text-[13px] outline-none focus:border-poly-green-dark focus:ring-2 focus:ring-poly-green-dark/15";
 // const review =
@@ -19,7 +20,6 @@ const inputClass =
 // ){
 
 // }
-
 
 
 function Section({
@@ -89,7 +89,21 @@ function StarRating({
   );
 }
 
-export default function ReviewForm() {
+type params = {
+  userId: number
+  listingId: number
+}
+
+export default function ReviewForm({userId, listingId}: params) {
+
+  if(isNaN(listingId)){
+    return (<div>
+      <p>
+        ListingId needs to be a number
+      </p>
+    </div>)
+  }
+
   const [state, formAction, isPending] = useActionState(postReview, {})
 
   const [overallRating, setOverallRating] = React.useState(-1);
@@ -107,6 +121,8 @@ export default function ReviewForm() {
     className="flex min-w-0 flex-col gap-5 text-[13px] [&_label]:text-xs [&_label]:font-medium [&_input]:font-normal [&_textarea]:font-normal [&_input[type=checkbox]]:size-4 [&_input[type=checkbox]]:shrink-0 [&_input[type=checkbox]]:accent-poly-green-dark"
     action={formAction}
     >
+      <input name="userid" value={userId} hidden readOnly={true}></input>
+      <input name="listingId" value={listingId} hidden readOnly={true}></input>
       <Section title="When did you live here?">
         <div className="grid gap-4 sm:grid-cols-2">
           <Textbox
