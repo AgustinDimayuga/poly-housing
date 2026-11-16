@@ -58,7 +58,7 @@ export default function Home() {
 
   const payload =
     role === "STUDENT"
-      ? { ...base,   grad_year : 2030 , campus_id: 1 }
+      ? { ...base,   grad_year : 2030 , campus_id: 2 }
       : {
           ...base,  license_num : "12345", license_state: "CA"
 
