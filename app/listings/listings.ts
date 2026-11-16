@@ -4,8 +4,8 @@ export type Listing = {
   campus: string;
   city: string;
   type: string;
-  bedrooms: number;
-  bathrooms: number;
+  bedroom: number;
+  bathroom: number;
   square_ft: number;
   monthly_price: number;
   available_from: string;

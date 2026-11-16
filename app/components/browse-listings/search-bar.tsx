@@ -2,7 +2,7 @@
 import Form from "next/form";
 import Button from "../button";
 import Textbox from "../text";
-import Icon from "./icon";
+import Icon from "./icon-glyph";
 
 type Current = {
   search: string;

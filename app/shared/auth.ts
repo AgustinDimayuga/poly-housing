@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 export async function getUser() {
   const token = (await cookies()).get("session")?.value;
 
-  console.log("token", token);
   if (!token) return null;
 
   const res = await fetch(`${process.env.API_URL}/user/me`, {
@@ -14,7 +13,6 @@ export async function getUser() {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store"
   });
-  console.log(res.ok);
   return res.ok ? res.json() : null;
 }
 

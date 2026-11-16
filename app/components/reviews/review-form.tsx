@@ -5,7 +5,7 @@ import Link from "next/link";
 import Button from "../button";
 import Textbox from "../text";
 import Textarea from "../textarea";
-import Icon from "../browse-listings/icon";
+import Icon from "../browse-listings/icon-glyph";
 import React from "react";
 import { postReview } from "./actions";
 

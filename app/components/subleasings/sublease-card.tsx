@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Button from "../button";
-import Icon from "../browse-listings/icon";
+import Icon from "../browse-listings/icon-glyph";
 import type { Sublease } from "./data";
 
 export default function SubleaseCard({

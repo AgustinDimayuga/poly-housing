@@ -1,7 +1,7 @@
 
 
 import Footer from "../components/browse-listings/footer";
-import Icon from "../components/browse-listings/icon";
+import Icon from "../components/browse-listings/icon-glyph";
 import ListingCard from "../components/browse-listings/listing-card";
 import SearchBar from "../components/browse-listings/search-bar";
 import Preferences from "../components/browse-listings/preferences";

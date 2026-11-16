@@ -133,17 +133,11 @@ def create_listing(listing: Listing):
 @router.get("/all", response_model=list[Listing])
 def get_listings():
     with db.engine.begin() as connection:
-        listings = (
-            connection.execute(
-                sqlalchemy.text("""
+        listings = connection.execute(sqlalchemy.text("""
                 SELECT listing.*, campus.campus
                 FROM listing
                 JOIN Campus ON campus.id = listing.campus
-                """)
-            )
-            .mappings()
-            .all()
-        )
+                """)).mappings().all()
 
         return [
             Listing(
@@ -284,14 +278,12 @@ def get_listing(listing_id: int):
 def delete_listing(listing_id: int):
     with db.engine.begin() as connection:
         listing = connection.execute(
-            sqlalchemy.text(
-                """
+            sqlalchemy.text("""
                 DELETE FROM listing
                 USING campus
                 WHERE listing.id = :listing_id AND campus.id = listing.campus
                 RETURNING * , campus.campus AS campus_name
-                """
-            ),
+                """),
             {"listing_id": listing_id},
         ).one_or_none()
 
@@ -331,13 +323,11 @@ def update_listing(listing: Update_listing):
         raise HTTPException(status_code=401, detail="Monthly Price Cannot be Negative")
     with db.engine.begin() as connection:
         id = connection.execute(
-            sqlalchemy.text(
-                """
+            sqlalchemy.text("""
                 SELECT *
                 FROM listing
                 WHERE id = :listing_id
-                """
-            ),
+                """),
             {"listing_id": listing.id},
         ).one_or_none()
 
@@ -346,8 +336,7 @@ def update_listing(listing: Update_listing):
                 status_code=401, detail="Listing could not be found in the database"
             )
         connection.execute(
-            sqlalchemy.text(
-                """
+            sqlalchemy.text("""
                 UPDATE listing
                 SET type = :type ,
                 price_monthly = :price_monthly,
@@ -359,8 +348,7 @@ def update_listing(listing: Update_listing):
                 WHERE listing.id = :listing_id
                 RETURNING *
 
-                """
-            ).bindparams(sqlalchemy.bindparam("amenities", type_=JSON)),
+                """).bindparams(sqlalchemy.bindparam("amenities", type_=JSON)),
             {
                 "listing_id": listing.id,
                 "type": listing.type,
