@@ -1,5 +1,5 @@
 import Button from "../button";
-import Icon from "../browse-listings/icon";
+import Icon from "../browse-listings/icon-glyph";
 
 export default function SubleaseFilters() {
   const filterClass =

@@ -21,7 +21,6 @@ export async function login(
       email: username
     };
   }
-  console.log(process.env.API_URL);
 
   const res = await fetch(
     `${process.env.API_URL}/auth/tokens`,

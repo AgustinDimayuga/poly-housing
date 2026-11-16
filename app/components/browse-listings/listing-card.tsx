@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import Icon from "./icon";
+import Icon from "./icon-glyph";
 import { dateLabel, number, type Home } from "./data";
 
-import type { ApiListing  } from "../../listings/listings";
+import type { Listing } from "../../listings/listings";
 import { formatPrice, formatDate } from "../../listings/format";
 
 
 // still needs picture to be inserted
-export default function ListingCard({listing}: {listing: ApiListing}) {
+export default function ListingCard({listing}: {listing: Listing}) {
   const title = `${listing.bedroom} bed ${listing.type}`;
   return (
     <article className="overflow-hidden rounded-xl border border-border-inputs bg-white shadow-[0_3px_10px_#20382f04]">

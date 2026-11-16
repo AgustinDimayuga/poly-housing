@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Button from "../components/button";
 import Footer from "../components/browse-listings/footer";
-import Icon from "../components/browse-listings/icon";
+import Icon from "../components/browse-listings/icon-glyph";
 import SubleaseCard from "../components/subleasings/sublease-card";
 import SubleaseFilters from "../components/subleasings/sublease-filters";
 import { subleases } from "../components/subleasings/data";

@@ -1,6 +1,6 @@
 import Button from "../button";
 import Textbox from "../text";
-import Icon from "./icon";
+import Icon from "./icon-glyph";
 import Link from "next/link";
 import Form from "next/form";
 
