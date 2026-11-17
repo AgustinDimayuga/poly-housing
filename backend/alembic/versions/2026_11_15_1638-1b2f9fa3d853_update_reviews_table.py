@@ -24,9 +24,7 @@ def upgrade() -> None:
     op.drop_constraint("ck_reviews_stars_range", "reviews", type_="check")
     op.drop_column("reviews", "stars")
     op.drop_column("reviews", "text")
-    op.drop_column("reviews", "realtor_id")
 
-    op.add_column("reviews", sa.Column("listing_id", sa.Integer, sa.ForeignKey("listing.id", ondelete="CASCADE"), nullable=False))
     op.add_column("reviews", sa.Column("move_in", sa.Date, nullable=True))
     op.add_column("reviews", sa.Column("move_out", sa.Date, nullable=True))
     op.add_column("reviews", sa.Column("arrangement", sa.String, nullable=False))
@@ -44,12 +42,11 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.add_column("reviews", sa.Column("realtor_id", sa.Integer, sa.ForeignKey("realtors.user_id", ondelete="CASCADE"), nullable=False))
+
     op.add_column("reviews", sa.Column("stars", sa.SmallInteger, nullable=False))
     op.add_column("reviews", sa.Column("text", sa.String, nullable=True))
     op.create_check_constraint("ck_reviews_stars_range", "reviews", "stars >= 1 AND stars <= 5")
 
-    op.drop_column("reviews", "listing_id")
     op.drop_column("reviews", "move_in")
     op.drop_column("reviews", "move_out")
     op.drop_column("reviews", "arrangement")
