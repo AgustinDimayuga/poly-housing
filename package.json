@@ -10,7 +10,8 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:ui" : "playwright test"
+    "test:ui" : "playwright test",
+    "test:all": "pnpm test && pnpm test:ui"
   },
   "dependencies": {
     "next": "16.3.5",
