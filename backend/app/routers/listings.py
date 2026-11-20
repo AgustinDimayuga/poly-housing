@@ -47,15 +47,15 @@ class Update_listing(BaseModel):
 def create_listing(listing: Listing):
 
     if listing.bedroom <= 0:
-        raise HTTPException(status_code=401, detail="invalid bedroom number")
+        raise HTTPException(status_code=422, detail="invalid bedroom number")
     if listing.bathroom <= 0:
-        raise HTTPException(status_code=401, detail="invalid bathroom number")
+        raise HTTPException(status_code=422, detail="invalid bathroom number")
     if listing.square_ft <= 0:
-        raise HTTPException(status_code=401, detail="invalid square footage")
+        raise HTTPException(status_code=422, detail="invalid square footage")
     if listing.monthly_price < 0:
-        raise HTTPException(status_code=401, detail="invalid monthly price")
-    if listing.available_from <= listing.available_to:
-        raise HTTPException(status_code=401, detail="invalid date range for listing")
+        raise HTTPException(status_code=422, detail="invalid monthly price")
+    if listing.available_from >= listing.available_to:
+        raise HTTPException(status_code=422, detail="invalid date range for listing")
 
     with db.engine.begin() as connection:
         campus = connection.execute(
@@ -321,7 +321,7 @@ class successfull_mess(BaseModel):
     message: str
 
 
-@router.post("/{update}", response_model=successfull_mess)
+@router.put("/{update}", response_model=successfull_mess)
 def update_listing(listing: Update_listing):
 
     if listing.monthly_price < 0:
