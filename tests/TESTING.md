@@ -100,3 +100,6 @@ Page titles and visible elements display correctly.
 User interface functionality works as expected.
 
 ## Limitations/Future Additions
+- Authentication Tests
+- Add/Remove Users
+- More Postings
