@@ -18,30 +18,40 @@ def create_user(user: NewUser):
     name = user.name.strip()
     hashed_password = get_password_hash(user.password)
 
-    try:
-        with db.engine.begin() as connection:
-            user_id = connection.execute(
-                sqlalchemy.text("""
-                    INSERT INTO users (role, email, name)
-                    VALUES (:role, :email, :name)
-                    RETURNING id
-                """),
-                {"role": user.role.value, "email": email, "name": name},
-            ).scalar_one()
-
-            connection.execute(
-                sqlalchemy.text("""
-                    INSERT INTO user_cred (user_id, password)
-                    VALUES (:user_id, :password)
-                """),
-                {"user_id": user_id, "password": hashed_password},
+    # try:
+    with db.engine.begin() as connection:
+        email_test = connection.execute(
+            sqlalchemy.text(
+                """
+                SELECT id
+                FROM users
+                WHERE email = :email
+                """
+            ),
+            {"email": email},
+        ).scalar_one_or_none()
+        if email_test is not None:
+            raise HTTPException(
+                status_code=409, detail="An account witht that email already exists"
             )
-            PROFILE_CREATORS[user.role](connection, user_id, user)
-    except IntegrityError:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="An account with that email already exists",
+
+        user_id = connection.execute(
+            sqlalchemy.text("""
+                INSERT INTO users (role, email, name)
+                VALUES (:role, :email, :name)
+                RETURNING id
+            """),
+            {"role": user.role.value, "email": email, "name": name},
+        ).scalar_one()
+
+        connection.execute(
+            sqlalchemy.text("""
+                INSERT INTO user_cred (user_id, password)
+                VALUES (:user_id, :password)
+            """),
+            {"user_id": user_id, "password": hashed_password},
         )
+        PROFILE_CREATORS[user.role](connection, user_id, user)
 
     signed_token = create_access_token(user_id=user_id, role=user.role)
     return Token(access_token=signed_token, token_type="bearer")

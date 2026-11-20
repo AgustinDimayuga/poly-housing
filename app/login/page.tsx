@@ -35,13 +35,13 @@ export default function LoginPage() {
             name="email"
             defaultValue={state.email}
             required>
-            email address
+            Email Address
           </Textbox>
         </div>
 
         <div className="">
           <Textbox name="password" type="password" required>
-            password
+            Password
           </Textbox>
         </div>
         <span className="text-red-600">{state.error}</span>
@@ -53,7 +53,7 @@ export default function LoginPage() {
               className="h-4 w-4 accent-green-800"
               name="stay"
             />
-            <span className="text-sm"> stay logged in?</span>
+            <span className="text-sm"> Stay logged in?</span>
           </label>
         </div>
 
@@ -64,7 +64,7 @@ export default function LoginPage() {
             className="w-full disabled:bg-gray-900"
             disabled={isPending}
             type="submit">
-            log in
+            Log in
           </Button>
         </div>
       </form>

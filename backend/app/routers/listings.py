@@ -5,7 +5,6 @@ from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy import JSON
 from sqlalchemy.exc import IntegrityError
-
 from app import db
 
 # from datetime import date (Talk to team about this)
@@ -133,11 +132,17 @@ def create_listing(listing: Listing):
 @router.get("/all", response_model=list[Listing])
 def get_listings():
     with db.engine.begin() as connection:
-        listings = connection.execute(sqlalchemy.text("""
+        listings = (
+            connection.execute(
+                sqlalchemy.text("""
                 SELECT listing.*, campus.campus
                 FROM listing
                 JOIN Campus ON campus.id = listing.campus
-                """)).mappings().all()
+                """)
+            )
+            .mappings()
+            .all()
+        )
 
         return [
             Listing(

@@ -25,8 +25,9 @@ export default function SearchBar({current} : {current : Current}) {
           className="pointer-events-none absolute top-3 left-3.5 text-poly-green-dark"
         />
         <Textbox
-          id="browse-location"
+          id="browse"
           name="search"
+          aria-label="SearchBar"
           defaultValue={current.search}
           placeholder="San Luis Obispo, CA"
           className="h-10 w-full min-w-0 border-0! bg-poly-green-light! pl-10! text-xs">
@@ -42,6 +43,7 @@ export default function SearchBar({current} : {current : Current}) {
       </Button>
       <Button
         type = "submit"
+        aria-label="SubmitSearch"
         className="flex h-10 flex-1 items-center justify-center gap-2 px-4 text-xs font-semibold md:flex-none">
         <Icon name="arrow" />
         Search housing
