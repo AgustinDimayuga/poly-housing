@@ -2,7 +2,11 @@
 ## Message Given to me when i downloaded Playwright
 ✔ Success! Created a Playwright Test project at /Users/miguel/calpoly/poly-housing
 
+
+
 ```bash
+Downloading Playwright: pnpm create playwright
+Link : https://playwright.dev/docs/intro
 Inside that directory, you can run several commands:
 
   pnpm exec playwright test
@@ -38,7 +42,7 @@ Visit https://playwright.dev/docs/intro for more information. ✨
 
 ```bash
   Docs : https://jestjs.io/docs/next/getting-started
-  script to download pnpm add --save-dev jest
+  script to download : pnpm add --save-dev jest
 
 
 ```
