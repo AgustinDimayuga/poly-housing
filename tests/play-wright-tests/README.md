@@ -42,7 +42,8 @@ Visit https://playwright.dev/docs/intro for more information. ✨
 
 ```bash
   Docs : https://jestjs.io/docs/next/getting-started
-  script to download : pnpm add --save-dev jest
+  How to download : pnpm add --save-dev jest
+
 
 
 ```
