@@ -1,8 +1,4 @@
-
-## Message Given to me when i downloaded Playwright
-✔ Success! Created a Playwright Test project at /Users/miguel/calpoly/poly-housing
-
-
+## Mini Guide to Setup Tools for Testing Locally
 
 ```bash
 Downloading Playwright: pnpm create playwright
@@ -12,6 +8,7 @@ Inside that directory, you can run several commands:
   pnpm exec playwright test
     Runs the end-to-end tests.
 
+  - Helpful for visualization
   pnpm exec playwright test --ui
     Starts the interactive UI mode.
 
@@ -43,6 +40,8 @@ Visit https://playwright.dev/docs/intro for more information. ✨
 ```bash
   Docs : https://jestjs.io/docs/next/getting-started
   How to download : pnpm add --save-dev jest
+
+  to use run : pnpm test to run any Jest tests
 
 
 
