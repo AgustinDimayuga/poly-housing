@@ -34,15 +34,44 @@ Known testing limitations or future tests your team would add.
 ## TDD Testing 
 
 
-
 ## Unit Testing 
+Unit tests verify individual pieces of code in isolation to ensure they behave as expected. 
+These tests focus on specific validation rules and functions without testing the entire application.
 
+What is being tested:
+
+Listing validation, including bedroom and bathroom requirements.
+
+Monthly price validation to prevent negative prices.
+
+Availability date validation to ensure the start date is before the end date.
 
 ## System Testing
+System tests verify that multiple parts of the application work together to complete a feature. 
+These tests send requests to the FastAPI backend and verify that API endpoints, application logic, and database operations work together correctly.
 
+What is tested:
 
+Creating a listing and retrieving it from the database.
+
+Rejecting listings with invalid input.
+
+Rejecting listings associated with nonexistent users.
+
+Updating a listing and verifying that the changes are saved and retrieved correctly.
 
 ## UI Testing 
+UI tests verify that the Poly Housing frontend works correctly from the user's perspective. 
+These tests interact with the application through a browser and check that pages and interface elements behave as expected.
+
+What is tested:
+
+Frontend pages load successfully.
+
+Page titles and visible elements display correctly.
+
+User interface functionality works as expected.
+
 
 
 ## Limitations/Future Additions 
